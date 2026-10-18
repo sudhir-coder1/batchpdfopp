@@ -696,7 +696,7 @@
   <!-- Job Information Card -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon indigo">ðŸ­</div>
+      <div class="card-icon indigo">🏭</div>
       <div>
         <div class="card-title">Job Information</div>
         <div class="card-subtitle">Enter job and product details</div>
@@ -734,7 +734,7 @@
   <!-- Batch Information Card -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon violet">ðŸ“‹</div>
+      <div class="card-icon violet">📋</div>
       <div>
         <div class="card-title">Batch Information</div>
         <div class="card-subtitle">Add batch and packing details</div>
@@ -778,15 +778,15 @@
     </div>
 
     <div class="btn-row">
-      <button class="btn btn-primary" id="saveBatchBtn" onclick="saveBatch()">âœš Add Batch</button>
-      <button class="btn btn-secondary" onclick="clearBatchForm()">â†º Clear</button>
+      <button class="btn btn-primary" id="saveBatchBtn" onclick="saveBatch()">✚ Add Batch</button>
+      <button class="btn btn-secondary" onclick="clearBatchForm()">↺ Clear</button>
     </div>
   </div>
 
   <!-- Batch List Card -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon emerald">ðŸ“Š</div>
+      <div class="card-icon emerald">📊</div>
       <div class="batch-list-title-row" style="flex:1;">
         <div>
           <div class="card-title" id="batchListTitle">Batch List</div>
@@ -824,7 +824,7 @@
     </div>
 
     <div class="btn-row">
-      <button class="btn btn-success" onclick="printPDF()">ðŸ–¨ Print / Save PDF</button>
+      <button class="btn btn-success" onclick="printPDF()">🖨 Print / Save PDF</button>
     </div>
   </div>
 
@@ -845,12 +845,12 @@ const MULTI_KEY = 'productionMultiProducts';
 
 /* ===== TOAST SYSTEM ===== */
 function showToast(message, type = 'info', sub = '') {
-  const icons = { success: 'âœ…', error: 'âŒ', info: 'â„¹ï¸', warning: 'âš ï¸' };
+  const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
   const container = document.getElementById('toastContainer');
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
   toast.innerHTML = `
-    <span class="toast-icon">${icons[type] || 'â„¹ï¸'}</span>
+    <span class="toast-icon">${icons[type] || 'ℹ️'}</span>
     <div class="toast-body">
       <div class="toast-message">${escapeHTML(message)}</div>
       ${sub ? `<div class="toast-sub">${escapeHTML(sub)}</div>` : ''}
@@ -924,7 +924,7 @@ document.getElementById('modalInput').addEventListener('keydown', function(e) {
   }
 });
 
-async function confirmDialog(title, msg, icon = 'âš ï¸') {
+async function confirmDialog(title, msg, icon = '⚠️') {
   const result = await showModal({
     icon, title, msg,
     inputLabel: false,
@@ -936,7 +936,7 @@ async function confirmDialog(title, msg, icon = 'âš ï¸') {
   return result === true;
 }
 
-async function promptDialog(title, msg, placeholder = '', icon = 'âœï¸') {
+async function promptDialog(title, msg, placeholder = '', icon = '✏️') {
   const result = await showModal({
     icon, title, msg,
     inputLabel: true,
@@ -958,7 +958,7 @@ function addPackingRow(box = '', packing = '') {
   row.innerHTML = `
     <input type="number" class="box-input" placeholder="Box qty" min="0" value="${escapeAttr(box)}">
     <input type="number" class="packing-input" placeholder="Qty per box" min="0" value="${escapeAttr(packing)}">
-    <button type="button" class="remove-btn" onclick="removePackingRow(this)" title="Remove row">Ã—</button>`;
+    <button type="button" class="remove-btn" onclick="removePackingRow(this)" title="Remove row">×</button>`;
   container.appendChild(row);
   row.querySelectorAll('input').forEach(i => i.addEventListener('input', calculateCurrent));
   calculateCurrent();
@@ -1055,7 +1055,7 @@ function makeId() { return 'p_' + Date.now().toString(36) + '_' + Math.random().
 async function addProduct() {
   if (!multipleMode) return;
   storeActiveProduct();
-  const name = await promptDialog('Add Cotton Name', 'Enter the cotton name:', 'Cotton name...', 'ðŸ§µ');
+  const name = await promptDialog('Add Cotton Name', 'Enter the cotton name:', 'Cotton name...', '🧵');
   if (name === null) return;
   if (!name.trim()) { showToast('Please enter a cotton name.', 'error'); return; }
   products.push({ id: makeId(), cottonName: name.trim(), batches: [] });
@@ -1092,7 +1092,7 @@ function loadActiveProduct() {
   const p = activeProduct();
   if (!p) return;
   batches = p.batches || (p.batches = []);
-  document.getElementById('batchListTitle').textContent = 'Batch List â€” ' + (p.cottonName || 'COTTON NAME').toUpperCase();
+  document.getElementById('batchListTitle').textContent = 'Batch List — ' + (p.cottonName || 'COTTON NAME').toUpperCase();
   renderTable();
   clearBatchForm();
 }
@@ -1120,7 +1120,7 @@ function saveBatch() {
   if (isEdit) {
     batches[editIndex] = batch;
     editIndex = -1;
-    document.getElementById('saveBatchBtn').textContent = 'âœš Add Batch';
+    document.getElementById('saveBatchBtn').textContent = '✚ Add Batch';
   } else {
     batches.push(batch);
   }
@@ -1130,7 +1130,7 @@ function saveBatch() {
   refreshBatchSuggestions();
   clearBatchForm();
   showToast(isEdit ? 'Batch updated successfully' : 'Batch added successfully', 'success',
-    `Batch ${batchNo} â€” Box: ${boxQty}, Qty: ${productQty}`);
+    `Batch ${batchNo} — Box: ${boxQty}, Qty: ${productQty}`);
 }
 
 function saveData() { localStorage.setItem('productionBatches', JSON.stringify(legacyBatches)); }
@@ -1141,7 +1141,7 @@ function renderTable() {
   if (!batches.length) {
     tbody.innerHTML = `<tr><td colspan="7">
       <div class="empty-state">
-        <div class="empty-icon">ðŸ“­</div>
+        <div class="empty-icon">📭</div>
         <div class="empty-title">No batches added yet</div>
         <div class="empty-sub">Add a batch using the form above</div>
       </div>
@@ -1163,8 +1163,8 @@ function renderTable() {
       <td class="short-cell ${short === 0 ? 'zero-short' : ''}">${short}</td>
       <td>
         <div class="action-btns">
-          <button class="btn btn-secondary btn-sm" onclick="editBatch(${i})">âœï¸ Edit</button>
-          <button class="btn btn-danger-soft btn-sm" onclick="deleteBatch(${i})">ðŸ—‘ Del</button>
+          <button class="btn btn-secondary btn-sm" onclick="editBatch(${i})">✏️ Edit</button>
+          <button class="btn btn-danger-soft btn-sm" onclick="deleteBatch(${i})">🗑 Del</button>
         </div>
       </td>`;
     tbody.appendChild(tr);
@@ -1182,7 +1182,7 @@ function editBatch(index) {
   c.innerHTML = '';
   (b.packing || []).forEach(p => addPackingRow(p.box, p.qty));
   if (!b.packing || !b.packing.length) addPackingRow();
-  document.getElementById('saveBatchBtn').textContent = 'âœ” Update Batch';
+  document.getElementById('saveBatchBtn').textContent = '✔ Update Batch';
   calculateCurrent();
   window.scrollTo({ top: document.querySelector('.card:nth-child(2)').offsetTop - 20, behavior: 'smooth' });
   showToast('Batch loaded for editing', 'info', `Editing batch ${b.batchNo}`);
@@ -1192,7 +1192,7 @@ async function deleteBatch(index) {
   const confirmed = await confirmDialog(
     'Delete Batch?',
     `Are you sure you want to delete batch "${batches[index].batchNo}"? This action cannot be undone.`,
-    'ðŸ—‘ï¸'
+    '🗑️'
   );
   if (!confirmed) return;
   const name = batches[index].batchNo;
@@ -1230,7 +1230,7 @@ function clearBatchForm() {
   // Keep the last entered PO quantity ready for the next batch; user can edit it.
   document.getElementById('poQty').value = localStorage.getItem('productionLastPOQty') || '0';
   document.getElementById('packingContainer').innerHTML = '';
-  document.getElementById('saveBatchBtn').textContent = 'âœš Add Batch';
+  document.getElementById('saveBatchBtn').textContent = '✚ Add Batch';
   addPackingRow();
   calculateCurrent();
 }
@@ -1334,7 +1334,7 @@ function createMultiPDF(printSheet, jobNo) {
         newPage();
         table = newProductTable((p.cottonName || 'COTTON NAME REQUIRED').toUpperCase() + ' (CONTINUED)');
       }
-      // FIX: was incorrectly passing [b] with index i â€” now properly uses global serial
+      // FIX: was incorrectly passing [b] with index i — now properly uses global serial
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${i + 1}</td>
