@@ -3,1832 +3,1406 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Production Entry</title>
-
+<meta name="description" content="Professional production batch entry and management system for manufacturing operations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* =========================================================
-   BASIC
-========================================================= */
+  :root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #e0e7ff;
+    --primary-glow: rgba(99,102,241,0.25);
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --warning: #f59e0b;
+    --warning-light: #fffbeb;
+    --neutral-50: #f8fafc;
+    --neutral-100: #f1f5f9;
+    --neutral-200: #e2e8f0;
+    --neutral-300: #cbd5e1;
+    --neutral-400: #94a3b8;
+    --neutral-500: #64748b;
+    --neutral-600: #475569;
+    --neutral-700: #334155;
+    --neutral-800: #1e293b;
+    --neutral-900: #0f172a;
+    --bg: #0f172a;
+    --surface: rgba(30,41,59,0.85);
+    --surface-solid: #1e293b;
+    --surface-hover: rgba(51,65,85,0.9);
+    --border: rgba(148,163,184,0.15);
+    --border-strong: rgba(148,163,184,0.3);
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --radius-lg: 20px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.3);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+    --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+  }
 
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 20% -10%, rgba(99,102,241,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 110%, rgba(139,92,246,0.14) 0%, transparent 60%);
+  }
 
-body{
-    font-family:Arial, Helvetica, sans-serif;
-    background:#f3f5f8;
-    color:#1f2937;
-    padding:25px;
-}
+  /* ===== LAYOUT ===== */
+  .app { max-width: 1060px; margin: 0 auto; }
 
-.container{
-    max-width:1100px;
-    margin:auto;
-}
+  /* ===== HEADER ===== */
+  .app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .app-logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, var(--primary), #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 0 20px var(--primary-glow);
+    flex-shrink: 0;
+  }
+  .app-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+  .app-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .header-badge {
+    padding: 5px 12px;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
 
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--shadow);
+    transition: border-color var(--transition);
+  }
+  .card:hover { border-color: var(--border-strong); }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .card-icon.indigo { background: rgba(99,102,241,0.2); }
+  .card-icon.violet { background: rgba(139,92,246,0.2); }
+  .card-icon.emerald { background: rgba(16,185,129,0.2); }
+  .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+  .card-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 
-/* =========================================================
-   CARD
-========================================================= */
+  /* ===== FORM ELEMENTS ===== */
+  .form-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
 
-.card{
-    background:#fff;
-    border:1px solid #e5e7eb;
-    border-radius:12px;
-    padding:22px;
-    margin-bottom:20px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.05);
-}
+  input[type="text"], input[type="number"] {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    outline: none;
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 500;
+    background: rgba(15,23,42,0.6);
+    color: var(--text-primary);
+    transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+  }
+  input[type="text"]::placeholder, input[type="number"]::placeholder {
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+  input[type="text"]:focus, input[type="number"]:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+    background: rgba(15,23,42,0.8);
+  }
 
-.card-title{
-    font-size:19px;
-    font-weight:700;
-    color:#111827;
-    margin-bottom:20px;
-}
+  /* ===== TOGGLE ===== */
+  .multi-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding: 14px 16px;
+    background: rgba(99,102,241,0.06);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--transition);
+  }
+  .multi-toggle:hover { background: rgba(99,102,241,0.1); }
+  .toggle-switch {
+    position: relative;
+    width: 40px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+  .toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: var(--border-strong);
+    border-radius: 11px;
+    transition: background var(--transition);
+    cursor: pointer;
+  }
+  .toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    left: 3px;
+    top: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: transform var(--transition);
+  }
+  .toggle-switch input:checked + .toggle-slider { background: var(--primary); }
+  .toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
+  .toggle-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
 
+  /* ===== MULTI PANEL ===== */
+  .multi-panel {
+    display: none;
+    margin-top: 16px;
+    padding: 18px;
+    background: rgba(15,23,42,0.4);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-sm);
+    animation: slideDown 0.25s ease;
+  }
+  .multi-panel.active { display: block; }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .multi-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .multi-panel-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
+  .product-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+  .product-tab {
+    height: auto;
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--surface-hover);
+    color: var(--text-secondary);
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    transition: all var(--transition);
+    font-family: inherit;
+  }
+  .product-tab:hover { border-color: var(--primary); color: var(--primary); }
+  .product-tab.active {
+    background: linear-gradient(135deg, var(--primary), #8b5cf6);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 2px 12px var(--primary-glow);
+  }
 
-/* =========================================================
-   FORM
-========================================================= */
+  /* ===== PACKING SECTION ===== */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+    margin-top: 24px;
+  }
+  .packing-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 48px;
+    gap: 10px;
+    margin-bottom: 8px;
+    padding: 0 4px;
+  }
+  .packing-header span {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+  .packing-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 48px;
+    gap: 10px;
+    margin-bottom: 10px;
+    animation: fadeIn 0.2s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .remove-btn {
+    height: 44px;
+    border: 1.5px solid rgba(239,68,68,0.3);
+    border-radius: var(--radius-sm);
+    background: rgba(239,68,68,0.1);
+    color: var(--danger);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+  }
+  .remove-btn:hover { background: rgba(239,68,68,0.2); border-color: var(--danger); }
 
-.form-grid{
-    display:grid;
-    grid-template-columns:1fr 2fr;
-    gap:18px;
-}
+  /* ===== LIVE SUMMARY ===== */
+  .live-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .summary-card {
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    background: rgba(15,23,42,0.5);
+    border: 1px solid var(--border);
+    text-align: center;
+    transition: all var(--transition);
+  }
+  .summary-card:nth-child(1) { border-color: rgba(99,102,241,0.3); }
+  .summary-card:nth-child(2) { border-color: rgba(16,185,129,0.3); }
+  .summary-card:nth-child(3) { border-color: rgba(245,158,11,0.3); }
+  .summary-label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+  .summary-value { font-size: 24px; font-weight: 800; }
+  .summary-card:nth-child(1) .summary-value { color: var(--primary); }
+  .summary-card:nth-child(2) .summary-value { color: var(--success); }
+  .summary-card:nth-child(3) .summary-value { color: var(--warning); }
 
-.field{
-    display:flex;
-    flex-direction:column;
-}
+  /* ===== BUTTONS ===== */
+  .btn {
+    border: none;
+    border-radius: var(--radius-sm);
+    height: 42px;
+    padding: 0 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    letter-spacing: 0.3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all var(--transition);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), #8b5cf6);
+    color: white;
+    box-shadow: 0 2px 12px var(--primary-glow);
+  }
+  .btn-primary:hover { box-shadow: 0 4px 20px var(--primary-glow); filter: brightness(1.1); }
+  .btn-secondary {
+    background: var(--surface-hover);
+    color: var(--text-secondary);
+    border: 1.5px solid var(--border-strong);
+  }
+  .btn-secondary:hover { border-color: var(--neutral-400); color: var(--text-primary); }
+  .btn-danger-soft {
+    background: rgba(239,68,68,0.12);
+    color: var(--danger);
+    border: 1.5px solid rgba(239,68,68,0.25);
+  }
+  .btn-danger-soft:hover { background: rgba(239,68,68,0.2); border-color: var(--danger); }
+  .btn-success {
+    background: linear-gradient(135deg, var(--success), #059669);
+    color: white;
+    box-shadow: 0 2px 12px rgba(16,185,129,0.3);
+  }
+  .btn-success:hover { filter: brightness(1.08); }
+  .btn-sm { height: 32px; padding: 0 12px; font-size: 11px; }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
 
-.field label{
-    font-size:13px;
-    font-weight:600;
-    color:#4b5563;
-    margin-bottom:7px;
-}
+  /* ===== TABLE ===== */
+  .table-wrapper { overflow-x: auto; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: rgba(15,23,42,0.6); }
+  th {
+    padding: 13px 10px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  td {
+    padding: 12px 10px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(148,163,184,0.07);
+    transition: background var(--transition);
+  }
+  tbody tr:hover td { background: rgba(99,102,241,0.05); }
+  tbody tr:last-child td { border-bottom: none; }
+  td.packing-cell { text-align: left; color: var(--text-primary); font-weight: 500; }
+  td.batch-cell { font-weight: 600; color: var(--text-primary); }
+  td.short-cell { color: var(--warning); font-weight: 600; }
+  .zero-short { color: var(--success) !important; }
 
-input{
-    width:100%;
-    height:42px;
-    padding:0 12px;
-    border:1px solid #d1d5db;
-    border-radius:7px;
-    outline:none;
-    font-size:14px;
-    background:#fff;
-}
+  .action-btns { display: flex; justify-content: center; gap: 6px; }
 
-input:focus{
-    border-color:#111827;
-    box-shadow:0 0 0 3px rgba(17,24,39,.08);
-}
+  /* ===== TOTALS BAR ===== */
+  .totals-bar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 32px;
+    margin-top: 20px;
+    padding: 16px 20px;
+    background: rgba(99,102,241,0.06);
+    border: 1px solid rgba(99,102,241,0.15);
+    border-radius: var(--radius-sm);
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .total-item { text-align: center; }
+  .total-label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
+  .total-value { font-size: 22px; font-weight: 800; color: var(--primary); margin-top: 2px; }
 
+  /* ===== EMPTY STATE ===== */
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--text-muted);
+  }
+  .empty-icon { font-size: 42px; margin-bottom: 12px; opacity: 0.6; }
+  .empty-title { font-size: 14px; font-weight: 600; color: var(--text-secondary); }
+  .empty-sub { font-size: 12px; margin-top: 4px; }
 
-/* =========================================================
-   PACKING
-========================================================= */
+  /* ===== DIVIDER ===== */
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
 
-.packing-header{
-    display:grid;
-    grid-template-columns:1fr 1fr 42px;
-    gap:10px;
-    margin-bottom:7px;
-    font-size:12px;
-    font-weight:600;
-    color:#6b7280;
-}
+  /* ===== TOAST NOTIFICATIONS ===== */
+  .toast-container {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+  }
+  .toast {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 18px;
+    background: var(--surface-solid);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+    min-width: 260px;
+    max-width: 380px;
+    pointer-events: all;
+    animation: toastIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    backdrop-filter: blur(10px);
+  }
+  .toast.exit { animation: toastOut 0.25s ease forwards; }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(40px) scale(0.95); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
+  }
+  @keyframes toastOut {
+    to { opacity: 0; transform: translateX(40px) scale(0.95); }
+  }
+  .toast-icon { font-size: 18px; flex-shrink: 0; }
+  .toast-body { flex: 1; }
+  .toast-message { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .toast-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .toast.success { border-left: 3px solid var(--success); }
+  .toast.error { border-left: 3px solid var(--danger); }
+  .toast.info { border-left: 3px solid var(--primary); }
+  .toast.warning { border-left: 3px solid var(--warning); }
 
-.packing-row{
-    display:grid;
-    grid-template-columns:1fr 1fr 42px;
-    gap:10px;
-    margin-bottom:10px;
-}
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeInOverlay 0.2s ease;
+  }
+  @keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .modal {
+    background: var(--surface-solid);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.9) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .modal-icon { font-size: 36px; text-align: center; margin-bottom: 14px; }
+  .modal-title { font-size: 17px; font-weight: 800; text-align: center; margin-bottom: 8px; }
+  .modal-msg { font-size: 13px; color: var(--text-secondary); text-align: center; line-height: 1.6; }
+  .modal-input-wrapper { margin-top: 18px; }
+  .modal-input-wrapper input {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: rgba(15,23,42,0.7);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 500;
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .modal-input-wrapper input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+  }
+  .modal-actions { display: flex; gap: 10px; margin-top: 22px; }
+  .modal-actions .btn { flex: 1; justify-content: center; height: 44px; }
 
-.remove-btn{
-    height:42px;
-    border:none;
-    border-radius:7px;
-    background:#fee2e2;
-    color:#dc2626;
-    font-size:18px;
-    font-weight:bold;
-    cursor:pointer;
-}
+  /* ===== BATCH LIST TITLE ===== */
+  .batch-list-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
 
-.remove-btn:hover{
-    background:#fecaca;
-}
+  /* ===== PRINT STYLES ===== */
+  #printSheet { display: none; }
 
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.btn-row{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top:18px;
-}
-
-button{
-    border:none;
-    border-radius:7px;
-    height:40px;
-    padding:0 16px;
-    cursor:pointer;
-    font-size:13px;
-    font-weight:600;
-}
-
-.btn-primary{
-    background:#111827;
-    color:#fff;
-}
-
-.btn-primary:hover{
-    background:#000;
-}
-
-.btn-light{
-    background:#f3f4f6;
-    color:#374151;
-}
-
-.btn-light:hover{
-    background:#e5e7eb;
-}
-
-.btn-danger{
-    background:#fee2e2;
-    color:#dc2626;
-}
-
-.btn-edit{
-    background:#e5e7eb;
-    color:#111827;
-}
-
-
-/* =========================================================
-   LIVE SUMMARY
-========================================================= */
-
-.live-summary{
-    display:flex;
-    gap:25px;
-    margin-top:18px;
-    padding:12px 15px;
-    border:1px solid #e5e7eb;
-    border-radius:8px;
-    background:#f9fafb;
-}
-
-.summary-item{
-    font-size:13px;
-    color:#6b7280;
-}
-
-.summary-item strong{
-    color:#111827;
-    font-size:15px;
-    margin-left:5px;
-}
-
-
-/* =========================================================
-   TABLE
-========================================================= */
-
-.table-wrapper{
-    overflow-x:auto;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-th,
-td{
-    border:1px solid #e5e7eb;
-    padding:11px 9px;
-    text-align:center;
-    font-size:13px;
-}
-
-th{
-    background:#f8fafc;
-    color:#374151;
-    font-weight:700;
-}
-
-td:nth-child(3){
-    text-align:left;
-}
-
-.action-buttons{
-    display:flex;
-    justify-content:center;
-    gap:5px;
-}
-
-.action-buttons button{
-    height:32px;
-    padding:0 10px;
-    font-size:12px;
-}
-
-
-/* =========================================================
-   TOTAL
-========================================================= */
-
-.total-bar{
-    display:flex;
-    justify-content:flex-end;
-    gap:30px;
-    margin-top:18px;
-    padding-top:15px;
-    border-top:1px solid #e5e7eb;
-}
-
-.total-item{
-    font-size:13px;
-    color:#6b7280;
-}
-
-.total-item strong{
-    color:#111827;
-    font-size:16px;
-    margin-left:5px;
-}
-
-
-/* =========================================================
-   EMPTY
-========================================================= */
-
-.empty{
-    text-align:center;
-    padding:30px;
-    color:#9ca3af;
-}
-
-
-/* =========================================================
-   PRINT SHEET HIDDEN
-========================================================= */
-
-#printSheet{
-    display:none;
-}
-
-
-/* =========================================================
-   PRINT / PDF
-========================================================= */
-
-@media print{
-
-    @page{
-        size:A4 portrait;
-        margin:10mm;
+  @media print {
+    @page { size: A4 portrait; margin: 0; }
+    html, body { background: #fff !important; padding: 0 !important; margin: 0 !important; width: 100%; }
+    .app { display: none !important; }
+    .toast-container { display: none !important; }
+    #printSheet {
+      display: block !important;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      color: #000;
     }
-
-    body{
-        background:#fff;
-        padding:0;
-        margin:0;
+    .pdf-page {
+      text-transform: uppercase;
+      width: 100%;
+      height: 297mm;
+      padding: 10mm;
+      box-sizing: border-box;
+      page-break-after: always;
+      position: relative;
     }
-
-    .app{
-        display:none !important;
+    .pdf-page:last-child { page-break-after: auto; }
+    .pdf-header {
+      width: 100%;
+      height: 13mm;
+      border: 1px solid #000;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      margin-bottom: 5mm;
     }
-
-    #printSheet{
-        display:block !important;
-        width:100%;
+    .pdf-header-cell {
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
     }
-
-
-    /* Each page = 30 batches */
-
-    .pdf-page{
-        width:100%;
-        height:277mm;
-        page-break-after:always;
-        position:relative;
+    .pdf-header-cell:first-child { border-right: 1px solid #000; }
+    .pdf-table {
+      width: 100%;
+      border: 1px solid #000 !important;
+      border-collapse: collapse !important;
+      border-spacing: 0 !important;
+      table-layout: fixed;
+      font-size: 10px;
+      color: #000;
+      background: #fff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      break-inside: auto;
     }
-
-    .pdf-page:last-child{
-        page-break-after:auto;
+    .pdf-table thead,
+    .pdf-table tbody,
+    .pdf-table tr {
+      break-inside: avoid;
     }
-
-
-    /* =========================
-       PDF HEADER
-    ========================= */
-
-    .pdf-header{
-        width:100%;
-        height:13mm;
-
-        border:1px solid #000;
-
-        display:grid;
-        grid-template-columns:1fr 2fr;
-
-        margin-bottom:5mm;
+    .pdf-table th, .pdf-table td {
+      border: 1px solid #000 !important;
+      height: 7.8mm;
+      padding: 1.5mm 2mm;
+      color: #000 !important;
+      background: #fff !important;
+      box-sizing: border-box;
     }
-
-    .pdf-header-cell{
-        display:flex;
-        align-items:center;
-
-        padding:0 8px;
-
-        font-size:11px;
-        font-weight:bold;
-
-        text-transform:uppercase;
+    .pdf-table th:first-child,
+    .pdf-table td:first-child { border-left: 1px solid #000 !important; }
+    .pdf-table th:last-child,
+    .pdf-table td:last-child { border-right: 1px solid #000 !important; }
+    .pdf-table thead tr:first-child th { border-top: 1px solid #000 !important; }
+    .pdf-table tbody tr:last-child td { border-bottom: 1px solid #000 !important; }
+    .pdf-table th {
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
     }
-
-    .pdf-header-cell:first-child{
-        border-right:1px solid #000;
+    .pdf-table td { text-align: center; }
+    .pdf-table .packing-cell { text-align: left; }
+    .col-sno { width: 8%; }
+    .col-batch { width: 15%; }
+    .col-packing { width: 39%; }
+    .col-box { width: 12%; }
+    .col-qty { width: 13%; }
+    .col-short { width: 13%; }
+    .pdf-total {
+      display: flex;
+      justify-content: flex-end;
+      gap: 25px;
+      margin-top: 5mm;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
     }
-
-
-    /* =========================
-       PDF TABLE
-    ========================= */
-
-    .pdf-table{
-        width:100%;
-        border-collapse:collapse;
-        table-layout:fixed;
-        font-size:10px;
+    .product-pdf-title {
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin: 4mm 0 3mm;
+      page-break-after: avoid;
     }
+  }
 
-    .pdf-table th,
-    .pdf-table td{
-        border:1px solid #000;
-        height:7.8mm;
-        padding:1.5mm 2mm;
-
-        color:#000;
-        background:#fff;
-    }
-
-    .pdf-table th{
-        font-weight:bold;
-        text-transform:uppercase;
-        text-align:center;
-    }
-
-    .pdf-table td{
-        text-align:center;
-    }
-
-    .pdf-table .packing-cell{
-        text-align:left;
-    }
-
-
-    /* =========================
-       COLUMN WIDTH
-    ========================= */
-
-    .col-sno{
-        width:8%;
-    }
-
-    .col-batch{
-        width:15%;
-    }
-
-    .col-packing{
-        width:39%;
-    }
-
-    .col-box{
-        width:12%;
-    }
-
-    .col-qty{
-        width:13%;
-    }
-
-    .col-short{
-        width:13%;
-    }
-
-
-    /* =========================
-       PDF TOTAL
-    ========================= */
-
-    .pdf-total{
-        display:flex;
-        justify-content:flex-end;
-        gap:25px;
-
-        margin-top:5mm;
-
-        font-size:11px;
-        font-weight:bold;
-
-        text-transform:uppercase;
-    }
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width:700px){
-
-    body{
-        padding:12px;
-    }
-
-    .form-grid{
-        grid-template-columns:1fr;
-    }
-
-    .live-summary{
-        flex-direction:column;
-        gap:8px;
-    }
-
-    .total-bar{
-        justify-content:space-between;
-        gap:10px;
-    }
-
-}
-
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 640px) {
+    body { padding: 12px 12px 50px; }
+    .card { padding: 20px 16px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .live-summary { grid-template-columns: 1fr; }
+    .totals-bar { justify-content: space-around; }
+    .app-header { gap: 10px; }
+    .app-title { font-size: 18px; }
+  }
 </style>
 </head>
-
-
 <body>
 
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
-<!-- =========================================================
-     APPLICATION
-========================================================= -->
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" style="display:none;" role="dialog" aria-modal="true">
+  <div class="modal" id="modalBox">
+    <div class="modal-icon" id="modalIcon"></div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-msg" id="modalMsg"></div>
+    <div class="modal-input-wrapper" id="modalInputWrapper" style="display:none;">
+      <input type="text" id="modalInput" placeholder="">
+    </div>
+    <div class="modal-actions" id="modalActions"></div>
+  </div>
+</div>
 
 <div class="container app">
 
-
-    <!-- JOB INFORMATION -->
-
-    <div class="card">
-
-        <div class="card-title">
-            Job Information
-        </div>
-
-
-        <div class="form-grid">
-
-            <div class="field">
-
-                <label>JOB NO.</label>
-
-                <input
-                    type="text"
-                    id="jobNo"
-                    placeholder="Enter job number"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>PRODUCT NAME</label>
-
-                <input
-                    type="text"
-                    id="productName"
-                    placeholder="Enter product name"
-                >
-
-            </div>
-
-        </div>
-
+  <!-- Job Information Card -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon indigo">ðŸ­</div>
+      <div>
+        <div class="card-title">Job Information</div>
+        <div class="card-subtitle">Enter job and product details</div>
+      </div>
     </div>
 
-
-
-    <!-- BATCH INFORMATION -->
-
-    <div class="card">
-
-        <div class="card-title">
-            Batch Information
-        </div>
-
-
-        <div class="form-grid">
-
-            <!-- BATCH -->
-
-            <div class="field">
-
-                <label>BATCH NO.</label>
-
-                <input
-                    type="text"
-                    id="batchNo"
-                    placeholder="Enter batch number"
-                >
-
-            </div>
-
-
-            <!-- PO -->
-
-            <div class="field">
-
-                <label>PO QTY</label>
-
-                <input
-                    type="number"
-                    id="poQty"
-                    value="0"
-                    min="0"
-                    placeholder="Enter PO quantity"
-                    oninput="calculateCurrent()"
-                >
-
-            </div>
-
-        </div>
-
-
-        <br>
-
-
-        <!-- PACKING -->
-
-        <div class="field">
-
-            <label>PACKING DETAILS</label>
-
-
-            <div class="packing-header">
-
-                <span>BOX QTY</span>
-
-                <span>PACKING</span>
-
-                <span></span>
-
-            </div>
-
-
-            <div id="packingContainer"></div>
-
-
-            <button
-                type="button"
-                class="btn-light"
-                onclick="addPackingRow()"
-            >
-                + ADD PACKING
-            </button>
-
-        </div>
-
-
-        <!-- LIVE SUMMARY -->
-
-        <div class="live-summary">
-
-            <div class="summary-item">
-
-                BOX QTY
-
-                <strong id="currentBoxQty">
-                    0
-                </strong>
-
-            </div>
-
-
-            <div class="summary-item">
-
-                PRODUCT QTY
-
-                <strong id="currentProductQty">
-                    0
-                </strong>
-
-            </div>
-
-
-            <div class="summary-item">
-
-                SHORT
-
-                <strong id="currentShortQty">
-                    0
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <!-- BUTTONS -->
-
-        <div class="btn-row">
-
-            <button
-                class="btn-primary"
-                id="saveBatchBtn"
-                onclick="saveBatch()"
-            >
-                ADD BATCH
-            </button>
-
-
-            <button
-                class="btn-light"
-                onclick="clearBatchForm()"
-            >
-                CLEAR
-            </button>
-
-        </div>
-
+    <div class="form-grid">
+      <div class="field">
+        <label for="jobNo">Job No.</label>
+        <input id="jobNo" type="text" placeholder="e.g. JOB-2024-001">
+      </div>
+      <div class="field">
+        <label for="productName">Product Name</label>
+        <input id="productName" type="text" placeholder="Enter product name">
+      </div>
     </div>
 
+    <label class="multi-toggle" for="multipleProductsToggle">
+      <div class="toggle-switch">
+        <input type="checkbox" id="multipleProductsToggle" onchange="toggleMultipleProducts()">
+        <div class="toggle-slider"></div>
+      </div>
+      <span class="toggle-label">Enable Multiple Products</span>
+    </label>
 
-
-    <!-- BATCH LIST -->
-
-    <div class="card">
-
-        <div class="card-title">
-            Batch List
-        </div>
-
-
-        <div class="table-wrapper">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>S.NO</th>
-
-                        <th>BATCH</th>
-
-                        <th>PACKING</th>
-
-                        <th>BOX</th>
-
-                        <th>QTY</th>
-
-                        <th>SHORT</th>
-
-                        <th>ACTION</th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody id="batchTableBody"></tbody>
-
-            </table>
-
-        </div>
-
-
-        <!-- TOTAL -->
-
-        <div class="total-bar">
-
-            <div class="total-item">
-
-                TOTAL BOX
-
-                <strong id="totalBox">
-                    0
-                </strong>
-
-            </div>
-
-
-            <div class="total-item">
-
-                TOTAL QTY
-
-                <strong id="totalQty">
-                    0
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <!-- PDF -->
-
-        <div class="btn-row">
-
-            <button
-                class="btn-primary"
-                onclick="printPDF()"
-            >
-                PRINT / SAVE PDF
-            </button>
-
-        </div>
-
+    <div id="multiPanel" class="multi-panel">
+      <div class="multi-panel-header">
+        <span class="multi-panel-title">Cotton Names in This Job</span>
+        <button class="btn btn-primary btn-sm" type="button" onclick="addProduct()">+ Add Cotton Name</button>
+      </div>
+      <div id="productTabs" class="product-tabs"></div>
     </div>
+  </div>
+
+  <!-- Batch Information Card -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon violet">ðŸ“‹</div>
+      <div>
+        <div class="card-title">Batch Information</div>
+        <div class="card-subtitle">Add batch and packing details</div>
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="field">
+        <label for="batchNo">Batch No.</label>
+        <input id="batchNo" type="text" list="batchNoSuggestions" placeholder="e.g. B-001" autocomplete="off" onfocus="refreshBatchSuggestions()">
+        <datalist id="batchNoSuggestions"></datalist>
+      </div>
+      <div class="field">
+        <label for="poQty">PO Quantity</label>
+        <input id="poQty" type="number" value="0" min="0" placeholder="Enter PO quantity" oninput="calculateCurrent()">
+      </div>
+    </div>
+
+    <div class="section-label">Packing Details</div>
+    <div class="packing-header">
+      <span>Box Qty</span>
+      <span>Packing Per Box</span>
+      <span></span>
+    </div>
+    <div id="packingContainer"></div>
+    <button type="button" class="btn btn-secondary btn-sm" onclick="addPackingRow()" style="margin-top:4px;">+ Add Packing Row</button>
+
+    <div class="live-summary">
+      <div class="summary-card">
+        <div class="summary-label">Box Qty</div>
+        <div class="summary-value" id="currentBoxQty">0</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Product Qty</div>
+        <div class="summary-value" id="currentProductQty">0</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Short</div>
+        <div class="summary-value" id="currentShortQty">0</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="saveBatchBtn" onclick="saveBatch()">âœš Add Batch</button>
+      <button class="btn btn-secondary" onclick="clearBatchForm()">â†º Clear</button>
+    </div>
+  </div>
+
+  <!-- Batch List Card -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon emerald">ðŸ“Š</div>
+      <div class="batch-list-title-row" style="flex:1;">
+        <div>
+          <div class="card-title" id="batchListTitle">Batch List</div>
+          <div class="card-subtitle">All added batches</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Batch</th>
+            <th style="text-align:left;">Packing</th>
+            <th>Box</th>
+            <th>Qty</th>
+            <th>Short</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="batchTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="totals-bar">
+      <div class="total-item">
+        <div class="total-label">Total Box</div>
+        <div class="total-value" id="totalBox">0</div>
+      </div>
+      <div class="total-item">
+        <div class="total-label">Total Qty</div>
+        <div class="total-value" id="totalQty">0</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-success" onclick="printPDF()">ðŸ–¨ Print / Save PDF</button>
+    </div>
+  </div>
 
 </div>
 
-
-
-<!-- =========================================================
-     PDF SHEET
-========================================================= -->
-
+<!-- Print Sheet -->
 <div id="printSheet"></div>
 
-
-
 <script>
-
-/* =========================================================
-   DATA
-========================================================= */
-
-let batches = JSON.parse(
-    localStorage.getItem("productionBatches") || "[]"
-);
-
+/* ===== DATA LAYER ===== */
+let legacyBatches = JSON.parse(localStorage.getItem('productionBatches') || '[]');
+let batches = legacyBatches;
 let editIndex = -1;
+let multipleMode = false;
+let products = [];
+let activeProductIndex = 0;
+const MULTI_KEY = 'productionMultiProducts';
 
-
-/* =========================================================
-   ADD PACKING ROW
-========================================================= */
-
-function addPackingRow(box = "", packing = ""){
-
-    const container =
-        document.getElementById(
-            "packingContainer"
-        );
-
-
-    const row =
-        document.createElement("div");
-
-
-    row.className =
-        "packing-row";
-
-
-    row.innerHTML = `
-
-        <input
-            type="number"
-            class="box-input"
-            placeholder="Box quantity"
-            min="0"
-            value="${box}"
-        >
-
-        <input
-            type="number"
-            class="packing-input"
-            placeholder="Packing"
-            min="0"
-            value="${packing}"
-        >
-
-        <button
-            type="button"
-            class="remove-btn"
-            onclick="removePackingRow(this)"
-        >
-            ×
-        </button>
-
-    `;
-
-
-    container.appendChild(row);
-
-
-    row.querySelectorAll("input")
-        .forEach(input => {
-
-            input.addEventListener(
-                "input",
-                calculateCurrent
-            );
-
-        });
-
-
-    calculateCurrent();
-
+/* ===== TOAST SYSTEM ===== */
+function showToast(message, type = 'info', sub = '') {
+  const icons = { success: 'âœ…', error: 'âŒ', info: 'â„¹ï¸', warning: 'âš ï¸' };
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `
+    <span class="toast-icon">${icons[type] || 'â„¹ï¸'}</span>
+    <div class="toast-body">
+      <div class="toast-message">${escapeHTML(message)}</div>
+      ${sub ? `<div class="toast-sub">${escapeHTML(sub)}</div>` : ''}
+    </div>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('exit');
+    setTimeout(() => toast.remove(), 280);
+  }, 3200);
 }
 
-
-/* =========================================================
-   REMOVE PACKING ROW
-========================================================= */
-
-function removePackingRow(button){
-
-    const rows =
-        document.querySelectorAll(
-            ".packing-row"
-        );
-
-
-    if(rows.length <= 1){
-
-        alert(
-            "At least one packing row is required."
-        );
-
-        return;
-
-    }
-
-
-    button.parentElement.remove();
-
-    calculateCurrent();
-
-}
-
-
-/* =========================================================
-   CALCULATE CURRENT
-========================================================= */
-
-function calculateCurrent(){
-
-    let boxQty = 0;
-
-    let productQty = 0;
-
-
-    document
-        .querySelectorAll(".packing-row")
-        .forEach(row => {
-
-            const box =
-                Number(
-                    row.querySelector(
-                        ".box-input"
-                    ).value
-                ) || 0;
-
-
-            const packing =
-                Number(
-                    row.querySelector(
-                        ".packing-input"
-                    ).value
-                ) || 0;
-
-
-            boxQty += box;
-
-
-            productQty +=
-                box * packing;
-
-        });
-
-
-    const poQty =
-        Number(
-            document.getElementById(
-                "poQty"
-            ).value
-        ) || 0;
-
-
-    /*
-       SHORT FORMULA
-
-       PO QTY - PRODUCT QTY
-
-       Minimum short = 0
-    */
-
-    const shortQty =
-        Math.max(
-            0,
-            poQty - productQty
-        );
-
-
-    document.getElementById(
-        "currentBoxQty"
-    ).textContent = boxQty;
-
-
-    document.getElementById(
-        "currentProductQty"
-    ).textContent = productQty;
-
-
-    document.getElementById(
-        "currentShortQty"
-    ).textContent = shortQty;
-
-}
-
-
-/* =========================================================
-   GET PACKING DATA
-========================================================= */
-
-function getPackingData(){
-
-    const packing = [];
-
-
-    document
-        .querySelectorAll(".packing-row")
-        .forEach(row => {
-
-            const box =
-                Number(
-                    row.querySelector(
-                        ".box-input"
-                    ).value
-                ) || 0;
-
-
-            const qty =
-                Number(
-                    row.querySelector(
-                        ".packing-input"
-                    ).value
-                ) || 0;
-
-
-            if(
-                box > 0 &&
-                qty > 0
-            ){
-
-                packing.push({
-                    box:box,
-                    qty:qty
-                });
-
-            }
-
-        });
-
-
-    return packing;
-
-}
-
-
-/* =========================================================
-   SAVE BATCH
-========================================================= */
-
-function saveBatch(){
-
-    const batchNo =
-        document
-            .getElementById(
-                "batchNo"
-            )
-            .value
-            .trim();
-
-
-    const poQty =
-        Number(
-            document.getElementById(
-                "poQty"
-            ).value
-        ) || 0;
-
-
-    const packing =
-        getPackingData();
-
-
-    if(!batchNo){
-
-        alert(
-            "Please enter Batch No."
-        );
-
-        return;
-
-    }
-
-
-    if(poQty <= 0){
-
-        alert(
-            "Please enter PO Qty."
-        );
-
-        return;
-
-    }
-
-
-    if(packing.length === 0){
-
-        alert(
-            "Please add packing details."
-        );
-
-        return;
-
-    }
-
-
-    let boxQty = 0;
-
-    let productQty = 0;
-
-
-    packing.forEach(item => {
-
-        boxQty +=
-            item.box;
-
-
-        productQty +=
-            item.box * item.qty;
-
-    });
-
-
-    /* SHORT */
-
-    const shortQty =
-        Math.max(
-            0,
-            poQty - productQty
-        );
-
-
-    const batch = {
-
-        batchNo:batchNo,
-
-        poQty:poQty,
-
-        packing:packing,
-
-        boxQty:boxQty,
-
-        productQty:productQty,
-
-        short:shortQty
-
+/* ===== MODAL SYSTEM ===== */
+let _modalResolve = null;
+
+function showModal({ icon = '', title = '', msg = '', inputLabel = '', inputPlaceholder = '', actions = [] }) {
+  document.getElementById('modalIcon').textContent = icon;
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalMsg').textContent = msg;
+  const inputWrapper = document.getElementById('modalInputWrapper');
+  const inputEl = document.getElementById('modalInput');
+  if (inputLabel !== undefined && inputLabel !== null && inputLabel !== false) {
+    inputWrapper.style.display = 'block';
+    inputEl.placeholder = inputPlaceholder || '';
+    inputEl.value = '';
+    setTimeout(() => inputEl.focus(), 100);
+  } else {
+    inputWrapper.style.display = 'none';
+  }
+  const actionsEl = document.getElementById('modalActions');
+  actionsEl.innerHTML = '';
+  actions.forEach(a => {
+    const btn = document.createElement('button');
+    btn.className = `btn ${a.cls || 'btn-secondary'}`;
+    btn.textContent = a.label;
+    btn.style.justifyContent = 'center';
+    btn.onclick = () => {
+      const resolve = _modalResolve;
+      _modalResolve = null;
+      document.getElementById('modalOverlay').style.display = 'none';
+      if (resolve) {
+        let result;
+        if (a.value === '__input__') {
+          result = inputEl.value.trim();
+        } else if (a.value !== undefined) {
+          result = a.value;
+        } else {
+          result = inputLabel !== false ? inputEl.value.trim() : null;
+        }
+        resolve(result);
+      }
     };
+    actionsEl.appendChild(btn);
+  });
+  document.getElementById('modalOverlay').style.display = 'flex';
+  return new Promise(resolve => { _modalResolve = resolve; });
+}
 
+function closeModal() {
+  document.getElementById('modalOverlay').style.display = 'none';
+  if (_modalResolve) { _modalResolve(null); _modalResolve = null; }
+}
 
-    /* ADD */
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
 
-    if(editIndex === -1){
+document.getElementById('modalInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    const firstConfirmBtn = document.querySelector('#modalActions .btn-primary, #modalActions .btn-success');
+    if (firstConfirmBtn) firstConfirmBtn.click();
+  }
+});
 
-        batches.push(batch);
+async function confirmDialog(title, msg, icon = 'âš ï¸') {
+  const result = await showModal({
+    icon, title, msg,
+    inputLabel: false,
+    actions: [
+      { label: 'Cancel', cls: 'btn-secondary', value: false },
+      { label: 'Confirm', cls: 'btn-danger-soft', value: true }
+    ]
+  });
+  return result === true;
+}
 
+async function promptDialog(title, msg, placeholder = '', icon = 'âœï¸') {
+  const result = await showModal({
+    icon, title, msg,
+    inputLabel: true,
+    inputPlaceholder: placeholder,
+    actions: [
+      { label: 'Cancel', cls: 'btn-secondary', value: null },
+      { label: 'OK', cls: 'btn-primary', value: '__input__' }
+    ]
+  });
+  if (result === null || result === undefined || result.trim?.() === '') return null;
+  return String(result).trim();
+}
+
+/* ===== PACKING ROWS ===== */
+function addPackingRow(box = '', packing = '') {
+  const container = document.getElementById('packingContainer');
+  const row = document.createElement('div');
+  row.className = 'packing-row';
+  row.innerHTML = `
+    <input type="number" class="box-input" placeholder="Box qty" min="0" value="${escapeAttr(box)}">
+    <input type="number" class="packing-input" placeholder="Qty per box" min="0" value="${escapeAttr(packing)}">
+    <button type="button" class="remove-btn" onclick="removePackingRow(this)" title="Remove row">Ã—</button>`;
+  container.appendChild(row);
+  row.querySelectorAll('input').forEach(i => i.addEventListener('input', calculateCurrent));
+  calculateCurrent();
+}
+
+function removePackingRow(button) {
+  if (document.querySelectorAll('.packing-row').length <= 1) {
+    showToast('At least one packing row is required.', 'warning');
+    return;
+  }
+  button.parentElement.remove();
+  calculateCurrent();
+}
+
+function calculateCurrent() {
+  let boxQty = 0, productQty = 0;
+  document.querySelectorAll('.packing-row').forEach(row => {
+    const box = Number(row.querySelector('.box-input').value) || 0;
+    const packing = Number(row.querySelector('.packing-input').value) || 0;
+    boxQty += box;
+    productQty += box * packing;
+  });
+  const poQty = Number(document.getElementById('poQty').value) || 0;
+  const shortQty = Math.max(0, poQty - productQty);
+  document.getElementById('currentBoxQty').textContent = boxQty;
+  document.getElementById('currentProductQty').textContent = productQty;
+  const shortEl = document.getElementById('currentShortQty');
+  shortEl.textContent = shortQty;
+  shortEl.parentElement.style.borderColor = shortQty === 0 ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.3)';
+}
+
+function getPackingData() {
+  const packing = [];
+  document.querySelectorAll('.packing-row').forEach(row => {
+    const box = Number(row.querySelector('.box-input').value) || 0;
+    const qty = Number(row.querySelector('.packing-input').value) || 0;
+    if (box > 0 && qty > 0) packing.push({ box, qty });
+  });
+  return packing;
+}
+
+/* ===== MULTI-COTTON LOGIC ===== */
+function activeProduct() { return multipleMode ? products[activeProductIndex] : null; }
+
+function storeActiveProduct() {
+  if (!multipleMode || !products[activeProductIndex]) return;
+  products[activeProductIndex].cottonName = (products[activeProductIndex].cottonName || '').trim();
+  products[activeProductIndex].batches = batches;
+  localStorage.setItem(MULTI_KEY, JSON.stringify(products));
+  localStorage.setItem('productionMultiJobNo', document.getElementById('jobNo').value.trim());
+  localStorage.setItem('productionMultiProductName', document.getElementById('productName').value.trim());
+}
+
+function toggleMultipleProducts() {
+  const enabled = document.getElementById('multipleProductsToggle').checked;
+  if (enabled === multipleMode) return;
+  if (enabled) {
+    const job = document.getElementById('jobNo').value.trim();
+    const saved = JSON.parse(localStorage.getItem(MULTI_KEY) || 'null');
+    if (Array.isArray(saved) && saved.length && localStorage.getItem('productionMultiJobNo') === job) {
+      products = saved.map(p => ({ id: p.id || makeId(), cottonName: p.cottonName || p.productName || '', batches: p.batches || [] }));
+      const savedProductName = localStorage.getItem('productionMultiProductName');
+      if (savedProductName) document.getElementById('productName').value = savedProductName;
+    } else {
+      products = [];
     }
-
-    /* UPDATE */
-
-    else{
-
-        batches[editIndex] =
-            batch;
-
-        editIndex = -1;
-
-
-        document.getElementById(
-            "saveBatchBtn"
-        ).textContent =
-            "ADD BATCH";
-
+    multipleMode = true;
+    activeProductIndex = 0;
+    document.getElementById('multiPanel').classList.add('active');
+    if (products.length) {
+      batches = products[0].batches;
+      loadActiveProduct();
+    } else {
+      batches = [];
+      renderTable();
+      clearBatchForm();
     }
-
-
-    saveData();
-
+    renderProductTabs();
+    storeActiveProduct();
+    showToast('Multiple cotton names enabled', 'info', 'Add a separate cotton name for each group');
+  } else {
+    storeActiveProduct();
+    multipleMode = false;
+    document.getElementById('multiPanel').classList.remove('active');
+    batches = legacyBatches;
+    document.getElementById('batchListTitle').textContent = 'Batch List';
     renderTable();
-
     clearBatchForm();
-
+  }
 }
 
+function makeId() { return 'p_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8); }
 
-/* =========================================================
-   LOCAL STORAGE
-========================================================= */
-
-function saveData(){
-
-    localStorage.setItem(
-        "productionBatches",
-        JSON.stringify(batches)
-    );
-
+async function addProduct() {
+  if (!multipleMode) return;
+  storeActiveProduct();
+  const name = await promptDialog('Add Cotton Name', 'Enter the cotton name:', 'Cotton name...', 'ðŸ§µ');
+  if (name === null) return;
+  if (!name.trim()) { showToast('Please enter a cotton name.', 'error'); return; }
+  products.push({ id: makeId(), cottonName: name.trim(), batches: [] });
+  activeProductIndex = products.length - 1;
+  batches = products[activeProductIndex].batches;
+  storeActiveProduct();
+  renderProductTabs();
+  loadActiveProduct();
+  showToast(`Cotton name "${name.trim()}" added`, 'success');
 }
 
-
-/* =========================================================
-   RENDER TABLE
-========================================================= */
-
-function renderTable(){
-
-    const tbody =
-        document.getElementById(
-            "batchTableBody"
-        );
-
-
-    tbody.innerHTML = "";
-
-
-    if(batches.length === 0){
-
-        tbody.innerHTML = `
-
-            <tr>
-
-                <td
-                    colspan="7"
-                    class="empty"
-                >
-                    No batch added yet
-                </td>
-
-            </tr>
-
-        `;
-
-    }
-
-
-    let totalBox = 0;
-
-    let totalQty = 0;
-
-
-    batches.forEach(
-        (batch,index) => {
-
-            totalBox +=
-                Number(
-                    batch.boxQty
-                ) || 0;
-
-
-            totalQty +=
-                Number(
-                    batch.productQty
-                ) || 0;
-
-
-            const packingText =
-                batch.packing
-                    .map(
-                        p =>
-                            `${p.box}×${p.qty}`
-                    )
-                    .join(", ");
-
-
-            const tr =
-                document.createElement(
-                    "tr"
-                );
-
-
-            tr.innerHTML = `
-
-                <td>
-                    ${index + 1}
-                </td>
-
-                <td>
-                    ${escapeHTML(
-                        batch.batchNo
-                    )}
-                </td>
-
-                <td>
-                    ${packingText}
-                </td>
-
-                <td>
-                    ${batch.boxQty}
-                </td>
-
-                <td>
-                    ${batch.productQty}
-                </td>
-
-                <td>
-                    ${batch.short}
-                </td>
-
-                <td>
-
-                    <div
-                        class="action-buttons"
-                    >
-
-                        <button
-                            class="btn-edit"
-                            onclick="editBatch(${index})"
-                        >
-                            EDIT
-                        </button>
-
-                        <button
-                            class="btn-danger"
-                            onclick="deleteBatch(${index})"
-                        >
-                            DELETE
-                        </button>
-
-                    </div>
-
-                </td>
-
-            `;
-
-
-            tbody.appendChild(tr);
-
-        }
-    );
-
-
-    document.getElementById(
-        "totalBox"
-    ).textContent =
-        totalBox;
-
-
-    document.getElementById(
-        "totalQty"
-    ).textContent =
-        totalQty;
-
+function selectProduct(index) {
+  if (index === activeProductIndex) return;
+  storeActiveProduct();
+  activeProductIndex = index;
+  loadActiveProduct();
+  renderProductTabs();
 }
 
-
-/* =========================================================
-   EDIT BATCH
-========================================================= */
-
-function editBatch(index){
-
-    const batch =
-        batches[index];
-
-
-    editIndex = index;
-
-
-    document.getElementById(
-        "batchNo"
-    ).value =
-        batch.batchNo;
-
-
-    document.getElementById(
-        "poQty"
-    ).value =
-        batch.poQty || 0;
-
-
-    const container =
-        document.getElementById(
-            "packingContainer"
-        );
-
-
-    container.innerHTML = "";
-
-
-    batch.packing.forEach(
-        item => {
-
-            addPackingRow(
-                item.box,
-                item.qty
-            );
-
-        }
-    );
-
-
-    document.getElementById(
-        "saveBatchBtn"
-    ).textContent =
-        "UPDATE BATCH";
-
-
-    calculateCurrent();
-
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
+function renderProductTabs() {
+  const tabs = document.getElementById('productTabs');
+  tabs.innerHTML = '';
+  products.forEach((p, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'product-tab' + (i === activeProductIndex ? ' active' : '');
+    b.textContent = (p.cottonName || 'ENTER COTTON NAME').toUpperCase();
+    b.onclick = () => selectProduct(i);
+    tabs.appendChild(b);
+  });
 }
 
-
-/* =========================================================
-   DELETE
-========================================================= */
-
-function deleteBatch(index){
-
-    if(
-        !confirm(
-            "Are you sure you want to delete this batch?"
-        )
-    ){
-
-        return;
-
-    }
-
-
-    batches.splice(
-        index,
-        1
-    );
-
-
-    saveData();
-
-    renderTable();
-
+function loadActiveProduct() {
+  const p = activeProduct();
+  if (!p) return;
+  batches = p.batches || (p.batches = []);
+  document.getElementById('batchListTitle').textContent = 'Batch List â€” ' + (p.cottonName || 'COTTON NAME').toUpperCase();
+  renderTable();
+  clearBatchForm();
 }
 
+document.getElementById('productName').addEventListener('input', () => {
+  if (multipleMode) {
+    localStorage.setItem('productionMultiProductName', document.getElementById('productName').value.trim());
+    storeActiveProduct();
+  }
+});
 
-/* =========================================================
-   CLEAR FORM
-========================================================= */
-
-function clearBatchForm(){
-
+/* ===== BATCH CRUD ===== */
+function saveBatch() {
+  const batchNo = document.getElementById('batchNo').value.trim();
+  const poQty = Number(document.getElementById('poQty').value) || 0;
+  const packing = getPackingData();
+  if (!batchNo) { showToast('Please enter Batch No.', 'error'); return; }
+  if (poQty <= 0) { showToast('Please enter a valid PO Qty.', 'error'); return; }
+  if (!packing.length) { showToast('Please add at least one packing detail.', 'error'); return; }
+  let boxQty = 0, productQty = 0;
+  packing.forEach(p => { boxQty += p.box; productQty += p.box * p.qty; });
+  const batch = { batchNo, poQty, packing, boxQty, productQty, short: Math.max(0, poQty - productQty) };
+  localStorage.setItem('productionLastPOQty', String(poQty));
+  const isEdit = editIndex !== -1;
+  if (isEdit) {
+    batches[editIndex] = batch;
     editIndex = -1;
-
-
-    document.getElementById(
-        "batchNo"
-    ).value = "";
-
-
-    document.getElementById(
-        "poQty"
-    ).value = "0";
-
-
-    document.getElementById(
-        "packingContainer"
-    ).innerHTML = "";
-
-
-    document.getElementById(
-        "saveBatchBtn"
-    ).textContent =
-        "ADD BATCH";
-
-
-    addPackingRow();
-
-    calculateCurrent();
-
+    document.getElementById('saveBatchBtn').textContent = 'âœš Add Batch';
+  } else {
+    batches.push(batch);
+  }
+  if (multipleMode) { activeProduct().batches = batches; storeActiveProduct(); renderProductTabs(); }
+  else { legacyBatches = batches; saveData(); }
+  renderTable();
+  refreshBatchSuggestions();
+  clearBatchForm();
+  showToast(isEdit ? 'Batch updated successfully' : 'Batch added successfully', 'success',
+    `Batch ${batchNo} â€” Box: ${boxQty}, Qty: ${productQty}`);
 }
 
-
-/* =========================================================
-   CREATE PDF
-   30 BATCHES PER PAGE
-========================================================= */
-
-function createPDFPages(){
-
-    const printSheet =
-        document.getElementById(
-            "printSheet"
-        );
-
-
-    printSheet.innerHTML = "";
-
-
-    const jobNo =
-        document.getElementById(
-            "jobNo"
-        ).value.trim();
-
-
-    const productName =
-        document.getElementById(
-            "productName"
-        ).value.trim();
-
-
-    /*
-       30 BATCHES PER PAGE
-    */
-
-    const totalPages =
-        Math.ceil(
-            batches.length / 30
-        );
-
-
-    for(
-        let page = 0;
-        page < totalPages;
-        page++
-    ){
-
-        const start =
-            page * 30;
-
-
-        const end =
-            Math.min(
-                start + 30,
-                batches.length
-            );
-
-
-        const pageBatches =
-            batches.slice(
-                start,
-                end
-            );
-
-
-        const pageDiv =
-            document.createElement(
-                "div"
-            );
-
-
-        pageDiv.className =
-            "pdf-page";
-
-
-        /* HEADER */
-
-        pageDiv.innerHTML = `
-
-            <div class="pdf-header">
-
-                <div class="pdf-header-cell">
-
-                    JOB NO. :
-                    ${escapeHTML(jobNo)}
-
-                </div>
-
-
-                <div class="pdf-header-cell">
-
-                    PRODUCT NAME :
-                    ${escapeHTML(productName)}
-
-                </div>
-
-            </div>
-
-
-            <table class="pdf-table">
-
-                <thead>
-
-                    <tr>
-
-                        <th class="col-sno">
-                            S.NO
-                        </th>
-
-                        <th class="col-batch">
-                            BATCH
-                        </th>
-
-                        <th class="col-packing">
-                            PACKING
-                        </th>
-
-                        <th class="col-box">
-                            BOX
-                        </th>
-
-                        <th class="col-qty">
-                            QTY
-                        </th>
-
-                        <th class="col-short">
-                            SHORT
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody></tbody>
-
-            </table>
-
-        `;
-
-
-        printSheet.appendChild(
-            pageDiv
-        );
-
-
-        const tbody =
-            pageDiv.querySelector(
-                "tbody"
-            );
-
-
-        pageBatches.forEach(
-            (batch,index) => {
-
-                const globalIndex =
-                    start + index;
-
-
-                const packingText =
-                    batch.packing
-                        .map(
-                            p =>
-                                `${p.box}×${p.qty}`
-                        )
-                        .join(", ");
-
-
-                const tr =
-                    document.createElement(
-                        "tr"
-                    );
-
-
-                tr.innerHTML = `
-
-                    <td>
-                        ${globalIndex + 1}
-                    </td>
-
-                    <td>
-                        ${escapeHTML(
-                            batch.batchNo
-                        )}
-                    </td>
-
-                    <td class="packing-cell">
-                        ${packingText}
-                    </td>
-
-                    <td>
-                        ${batch.boxQty}
-                    </td>
-
-                    <td>
-                        ${batch.productQty}
-                    </td>
-
-                    <td>
-                        ${batch.short}
-                    </td>
-
-                `;
-
-
-                tbody.appendChild(
-                    tr
-                );
-
-            }
-        );
-
-
-        /*
-           TOTAL ONLY ON LAST PAGE
-        */
-
-        if(
-            page === totalPages - 1
-        ){
-
-            let totalBox = 0;
-
-            let totalQty = 0;
-
-
-            batches.forEach(
-                batch => {
-
-                    totalBox +=
-                        Number(
-                            batch.boxQty
-                        ) || 0;
-
-
-                    totalQty +=
-                        Number(
-                            batch.productQty
-                        ) || 0;
-
-                }
-            );
-
-
-            const totalDiv =
-                document.createElement(
-                    "div"
-                );
-
-
-            totalDiv.className =
-                "pdf-total";
-
-
-            totalDiv.innerHTML = `
-
-                <span>
-                    TOTAL BOX :
-                    ${totalBox}
-                </span>
-
-
-                <span>
-                    TOTAL QTY :
-                    ${totalQty}
-                </span>
-
-            `;
-
-
-            pageDiv.appendChild(
-                totalDiv
-            );
-
-        }
-
-    }
-
+function saveData() { localStorage.setItem('productionBatches', JSON.stringify(legacyBatches)); }
+
+function renderTable() {
+  const tbody = document.getElementById('batchTableBody');
+  tbody.innerHTML = '';
+  if (!batches.length) {
+    tbody.innerHTML = `<tr><td colspan="7">
+      <div class="empty-state">
+        <div class="empty-icon">ðŸ“­</div>
+        <div class="empty-title">No batches added yet</div>
+        <div class="empty-sub">Add a batch using the form above</div>
+      </div>
+    </td></tr>`;
+  }
+  let totalBox = 0, totalQty = 0;
+  batches.forEach((b, i) => {
+    totalBox += Number(b.boxQty) || 0;
+    totalQty += Number(b.productQty) || 0;
+    const packingText = (b.packing || []).map(p => `(${p.box} x ${p.qty})`).join(', ');
+    const short = Number(b.short) || 0;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${i + 1}</td>
+      <td class="batch-cell">${escapeHTML(b.batchNo)}</td>
+      <td class="packing-cell">${escapeHTML(packingText)}</td>
+      <td>${Number(b.boxQty) || 0}</td>
+      <td>${Number(b.productQty) || 0}</td>
+      <td class="short-cell ${short === 0 ? 'zero-short' : ''}">${short}</td>
+      <td>
+        <div class="action-btns">
+          <button class="btn btn-secondary btn-sm" onclick="editBatch(${i})">âœï¸ Edit</button>
+          <button class="btn btn-danger-soft btn-sm" onclick="deleteBatch(${i})">ðŸ—‘ Del</button>
+        </div>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('totalBox').textContent = totalBox;
+  document.getElementById('totalQty').textContent = totalQty;
 }
 
-
-/* =========================================================
-   PRINT / SAVE PDF
-========================================================= */
-
-function printPDF(){
-
-    const jobNo =
-        document.getElementById(
-            "jobNo"
-        ).value.trim();
-
-
-    const productName =
-        document.getElementById(
-            "productName"
-        ).value.trim();
-
-
-    if(!jobNo){
-
-        alert(
-            "Please enter Job No."
-        );
-
-        return;
-
-    }
-
-
-    if(!productName){
-
-        alert(
-            "Please enter Product Name."
-        );
-
-        return;
-
-    }
-
-
-    if(batches.length === 0){
-
-        alert(
-            "Please add at least one batch."
-        );
-
-        return;
-
-    }
-
-
-    createPDFPages();
-
-
-    setTimeout(
-        () => {
-
-            window.print();
-
-        },
-        100
-    );
-
+function editBatch(index) {
+  const b = batches[index];
+  editIndex = index;
+  document.getElementById('batchNo').value = b.batchNo;
+  document.getElementById('poQty').value = b.poQty || 0;
+  const c = document.getElementById('packingContainer');
+  c.innerHTML = '';
+  (b.packing || []).forEach(p => addPackingRow(p.box, p.qty));
+  if (!b.packing || !b.packing.length) addPackingRow();
+  document.getElementById('saveBatchBtn').textContent = 'âœ” Update Batch';
+  calculateCurrent();
+  window.scrollTo({ top: document.querySelector('.card:nth-child(2)').offsetTop - 20, behavior: 'smooth' });
+  showToast('Batch loaded for editing', 'info', `Editing batch ${b.batchNo}`);
 }
 
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHTML(value){
-
-    return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
+async function deleteBatch(index) {
+  const confirmed = await confirmDialog(
+    'Delete Batch?',
+    `Are you sure you want to delete batch "${batches[index].batchNo}"? This action cannot be undone.`,
+    'ðŸ—‘ï¸'
+  );
+  if (!confirmed) return;
+  const name = batches[index].batchNo;
+  batches.splice(index, 1);
+  if (multipleMode) { activeProduct().batches = batches; storeActiveProduct(); }
+  else { legacyBatches = batches; saveData(); }
+  renderTable();
+  if (editIndex === index) clearBatchForm();
+  else if (editIndex > index) editIndex--;
+  showToast(`Batch "${name}" deleted`, 'warning');
 }
 
+function refreshBatchSuggestions() {
+  const datalist = document.getElementById('batchNoSuggestions');
+  if (!datalist) return;
+  const values = new Set();
+  const addFrom = list => (Array.isArray(list) ? list : []).forEach(b => {
+    if (b && b.batchNo) values.add(String(b.batchNo).toLocaleUpperCase());
+  });
+  addFrom(batches);
+  addFrom(legacyBatches);
+  if (Array.isArray(products)) products.forEach(product => addFrom(product && product.batches));
+  try {
+    const saved = JSON.parse(localStorage.getItem('productionBatches') || '[]');
+    addFrom(saved);
+    const savedProducts = JSON.parse(localStorage.getItem(MULTI_KEY) || '[]');
+    if (Array.isArray(savedProducts)) savedProducts.forEach(product => addFrom(product && product.batches));
+  } catch (_) {}
+  datalist.innerHTML = Array.from(values).sort().map(value => `<option value="${escapeAttr(value)}"></option>`).join('');
+}
 
-/* =========================================================
-   INITIAL LOAD
-========================================================= */
+function clearBatchForm() {
+  editIndex = -1;
+  document.getElementById('batchNo').value = '';
+  // Keep the last entered PO quantity ready for the next batch; user can edit it.
+  document.getElementById('poQty').value = localStorage.getItem('productionLastPOQty') || '0';
+  document.getElementById('packingContainer').innerHTML = '';
+  document.getElementById('saveBatchBtn').textContent = 'âœš Add Batch';
+  addPackingRow();
+  calculateCurrent();
+}
 
+/* ===== HELPERS ===== */
+function escapeHTML(v) {
+  return String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+function escapeAttr(v) { return escapeHTML(v); }
+
+/* ===== PDF GENERATION ===== */
+function tableHTML(list, serialStart = 0) {
+  return list.map((b, i) =>
+    `<tr>
+      <td>${serialStart + i + 1}</td>
+      <td>${escapeHTML(b.batchNo)}</td>
+      <td class="packing-cell">${escapeHTML((b.packing || []).map(p => `(${p.box} x ${p.qty})`).join(', '))}</td>
+      <td>${Number(b.boxQty) || 0}</td>
+      <td>${Number(b.productQty) || 0}</td>
+      <td>${Number(b.short) || 0}</td>
+    </tr>`
+  ).join('');
+}
+
+function tableHeader() {
+  return `<thead><tr>
+    <th class="col-sno">S.NO</th>
+    <th class="col-batch">BATCH</th>
+    <th class="col-packing">PACKING</th>
+    <th class="col-box">BOX</th>
+    <th class="col-qty">QTY</th>
+    <th class="col-short">SHORT</th>
+  </tr></thead>`;
+}
+
+function addPdfTotal(page, list) {
+  const box = list.reduce((s, b) => s + (Number(b.boxQty) || 0), 0);
+  const qty = list.reduce((s, b) => s + (Number(b.productQty) || 0), 0);
+  const d = document.createElement('div');
+  d.className = 'pdf-total';
+  d.innerHTML = `<span>TOTAL BOX : ${box}</span><span>TOTAL QTY : ${qty}</span>`;
+  page.appendChild(d);
+}
+
+function createSinglePDF(printSheet, jobNo, productName) {
+  const pages = Math.ceil(batches.length / 30);
+  for (let page = 0; page < pages; page++) {
+    const start = page * 30;
+    const list = batches.slice(start, start + 30);
+    const d = document.createElement('div');
+    d.className = 'pdf-page';
+    d.innerHTML = `
+      <div class="pdf-header">
+        <div class="pdf-header-cell">JOB NO. : ${escapeHTML(jobNo)}</div>
+        <div class="pdf-header-cell">PRODUCT NAME : ${escapeHTML(productName)}</div>
+      </div>
+      <table class="pdf-table">${tableHeader()}<tbody>${tableHTML(list, start)}</tbody></table>`;
+    printSheet.appendChild(d);
+    if (page === pages - 1) addPdfTotal(d, batches);
+  }
+}
+
+function createMultiPDF(printSheet, jobNo) {
+  let page = null, rows = 0, allBatches = [];
+  const fixedProductName = document.getElementById('productName').value.trim();
+  const newPage = () => {
+    page = document.createElement('div');
+    page.className = 'pdf-page';
+    page.innerHTML = `
+      <div class="pdf-header">
+        <div class="pdf-header-cell">JOB NO. : ${escapeHTML(jobNo)}</div>
+        <div class="pdf-header-cell">PRODUCT NAME : ${escapeHTML(fixedProductName)}</div>
+      </div>`;
+    printSheet.appendChild(page);
+    rows = 0;
+  };
+  const newProductTable = (name) => {
+    const title = document.createElement('div');
+    title.className = 'product-pdf-title';
+    title.textContent = name;
+    page.appendChild(title);
+    const table = document.createElement('table');
+    table.className = 'pdf-table';
+    table.innerHTML = tableHeader() + '<tbody></tbody>';
+    page.appendChild(table);
+    return table;
+  };
+  newPage();
+  products.forEach((p, pi) => {
+    const list = p.batches || [];
+    allBatches = allBatches.concat(list);
+    if (rows >= 30) newPage();
+    let table = newProductTable((p.cottonName || 'COTTON NAME REQUIRED').toUpperCase());
+    if (!list.length) {
+      table.querySelector('tbody').innerHTML = '<tr><td colspan="6">NO BATCHES</td></tr>';
+      rows++;
+      return;
+    }
+    list.forEach((b, i) => {
+      if (rows >= 30) {
+        newPage();
+        table = newProductTable((p.cottonName || 'COTTON NAME REQUIRED').toUpperCase() + ' (CONTINUED)');
+      }
+      // FIX: was incorrectly passing [b] with index i â€” now properly uses global serial
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${i + 1}</td>
+        <td>${escapeHTML(b.batchNo)}</td>
+        <td class="packing-cell">${escapeHTML((b.packing || []).map(pk => `(${pk.box} x ${pk.qty})`).join(', '))}</td>
+        <td>${Number(b.boxQty) || 0}</td>
+        <td>${Number(b.productQty) || 0}</td>
+        <td>${Number(b.short) || 0}</td>`;
+      table.querySelector('tbody').appendChild(tr);
+      rows++;
+    });
+  });
+  addPdfTotal(page, allBatches);
+}
+
+async function printPDF() {
+  const jobNo = document.getElementById('jobNo').value.trim();
+  if (!jobNo) { showToast('Please enter Job No. before printing.', 'error'); return; }
+  const sheet = document.getElementById('printSheet');
+  sheet.innerHTML = '';
+  if (multipleMode) {
+    storeActiveProduct();
+    if (!document.getElementById('productName').value.trim()) {
+      showToast('Please enter Product Name.', 'error');
+      document.getElementById('productName').focus();
+      return;
+    }
+    if (!products.length || products.some(p => !(p.cottonName || '').trim())) {
+      showToast('Please add a cotton name for every cotton group.', 'error');
+      const missingIndex = products.findIndex(p => !(p.cottonName || '').trim());
+      activeProductIndex = missingIndex;
+      loadActiveProduct();
+      renderProductTabs();
+      document.getElementById('productName').focus();
+      return;
+    }
+    if (!products.some(p => (p.batches || []).length)) { showToast('Please add at least one batch.', 'error'); return; }
+    createMultiPDF(sheet, jobNo);
+  } else {
+    const name = document.getElementById('productName').value.trim();
+    if (!name) { showToast('Please enter Product Name.', 'error'); return; }
+    if (!batches.length) { showToast('Please add at least one batch.', 'error'); return; }
+    createSinglePDF(sheet, jobNo, name);
+  }
+  showToast('Opening print dialog...', 'info');
+  setTimeout(() => window.print(), 120);
+}
+
+/* ===== FORCE TEXT INPUT TO UPPERCASE ===== */
+document.addEventListener('input', function (event) {
+  const el = event.target;
+  if (el instanceof HTMLInputElement && el.type === 'text' || el instanceof HTMLTextAreaElement) {
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const upper = el.value.toLocaleUpperCase();
+    if (el.value !== upper) {
+      el.value = upper;
+      if (typeof start === 'number' && typeof end === 'number') {
+        try { el.setSelectionRange(start, end); } catch (_) {}
+      }
+    }
+  }
+});
+
+/* ===== INIT ===== */
 renderTable();
-
+refreshBatchSuggestions();
 clearBatchForm();
-
 </script>
-
 </body>
 </html>
