@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Production Entry</title>
+
+<style>
+
+/* =========================================================
+   BASIC
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f3f5f8;
+    color:#1f2937;
+    padding:25px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:22px;
+    margin-bottom:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.05);
+}
+
+.card-title{
+    font-size:19px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:20px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 2fr;
+    gap:18px;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+}
+
+.field label{
+    font-size:13px;
+    font-weight:600;
+    color:#4b5563;
+    margin-bottom:7px;
+}
+
+input{
+    width:100%;
+    height:42px;
+    padding:0 12px;
+    border:1px solid #d1d5db;
+    border-radius:7px;
+    outline:none;
+    font-size:14px;
+    background:#fff;
+}
+
+input:focus{
+    border-color:#111827;
+    box-shadow:0 0 0 3px rgba(17,24,39,.08);
+}
+
+
+/* =========================================================
+   PACKING
+========================================================= */
+
+.packing-header{
+    display:grid;
+    grid-template-columns:1fr 1fr 42px;
+    gap:10px;
+    margin-bottom:7px;
+    font-size:12px;
+    font-weight:600;
+    color:#6b7280;
+}
+
+.packing-row{
+    display:grid;
+    grid-template-columns:1fr 1fr 42px;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.remove-btn{
+    height:42px;
+    border:none;
+    border-radius:7px;
+    background:#fee2e2;
+    color:#dc2626;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.remove-btn:hover{
+    background:#fecaca;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:18px;
+}
+
+button{
+    border:none;
+    border-radius:7px;
+    height:40px;
+    padding:0 16px;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+}
+
+.btn-primary{
+    background:#111827;
+    color:#fff;
+}
+
+.btn-primary:hover{
+    background:#000;
+}
+
+.btn-light{
+    background:#f3f4f6;
+    color:#374151;
+}
+
+.btn-light:hover{
+    background:#e5e7eb;
+}
+
+.btn-danger{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.btn-edit{
+    background:#e5e7eb;
+    color:#111827;
+}
+
+
+/* =========================================================
+   LIVE SUMMARY
+========================================================= */
+
+.live-summary{
+    display:flex;
+    gap:25px;
+    margin-top:18px;
+    padding:12px 15px;
+    border:1px solid #e5e7eb;
+    border-radius:8px;
+    background:#f9fafb;
+}
+
+.summary-item{
+    font-size:13px;
+    color:#6b7280;
+}
+
+.summary-item strong{
+    color:#111827;
+    font-size:15px;
+    margin-left:5px;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,
+td{
+    border:1px solid #e5e7eb;
+    padding:11px 9px;
+    text-align:center;
+    font-size:13px;
+}
+
+th{
+    background:#f8fafc;
+    color:#374151;
+    font-weight:700;
+}
+
+td:nth-child(3){
+    text-align:left;
+}
+
+.action-buttons{
+    display:flex;
+    justify-content:center;
+    gap:5px;
+}
+
+.action-buttons button{
+    height:32px;
+    padding:0 10px;
+    font-size:12px;
+}
+
+
+/* =========================================================
+   TOTAL
+========================================================= */
+
+.total-bar{
+    display:flex;
+    justify-content:flex-end;
+    gap:30px;
+    margin-top:18px;
+    padding-top:15px;
+    border-top:1px solid #e5e7eb;
+}
+
+.total-item{
+    font-size:13px;
+    color:#6b7280;
+}
+
+.total-item strong{
+    color:#111827;
+    font-size:16px;
+    margin-left:5px;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#9ca3af;
+}
+
+
+/* =========================================================
+   PRINT SHEET HIDDEN
+========================================================= */
+
+#printSheet{
+    display:none;
+}
+
+
+/* =========================================================
+   PRINT / PDF
+========================================================= */
+
+@media print{
+
+    @page{
+        size:A4 portrait;
+        margin:10mm;
+    }
+
+    body{
+        background:#fff;
+        padding:0;
+        margin:0;
+    }
+
+    .app{
+        display:none !important;
+    }
+
+    #printSheet{
+        display:block !important;
+        width:100%;
+    }
+
+
+    /* Each page = 30 batches */
+
+    .pdf-page{
+        width:100%;
+        height:277mm;
+        page-break-after:always;
+        position:relative;
+    }
+
+    .pdf-page:last-child{
+        page-break-after:auto;
+    }
+
+
+    /* =========================
+       PDF HEADER
+    ========================= */
+
+    .pdf-header{
+        width:100%;
+        height:13mm;
+
+        border:1px solid #000;
+
+        display:grid;
+        grid-template-columns:1fr 2fr;
+
+        margin-bottom:5mm;
+    }
+
+    .pdf-header-cell{
+        display:flex;
+        align-items:center;
+
+        padding:0 8px;
+
+        font-size:11px;
+        font-weight:bold;
+
+        text-transform:uppercase;
+    }
+
+    .pdf-header-cell:first-child{
+        border-right:1px solid #000;
+    }
+
+
+    /* =========================
+       PDF TABLE
+    ========================= */
+
+    .pdf-table{
+        width:100%;
+        border-collapse:collapse;
+        table-layout:fixed;
+        font-size:10px;
+    }
+
+    .pdf-table th,
+    .pdf-table td{
+        border:1px solid #000;
+        height:7.8mm;
+        padding:1.5mm 2mm;
+
+        color:#000;
+        background:#fff;
+    }
+
+    .pdf-table th{
+        font-weight:bold;
+        text-transform:uppercase;
+        text-align:center;
+    }
+
+    .pdf-table td{
+        text-align:center;
+    }
+
+    .pdf-table .packing-cell{
+        text-align:left;
+    }
+
+
+    /* =========================
+       COLUMN WIDTH
+    ========================= */
+
+    .col-sno{
+        width:8%;
+    }
+
+    .col-batch{
+        width:15%;
+    }
+
+    .col-packing{
+        width:39%;
+    }
+
+    .col-box{
+        width:12%;
+    }
+
+    .col-qty{
+        width:13%;
+    }
+
+    .col-short{
+        width:13%;
+    }
+
+
+    /* =========================
+       PDF TOTAL
+    ========================= */
+
+    .pdf-total{
+        display:flex;
+        justify-content:flex-end;
+        gap:25px;
+
+        margin-top:5mm;
+
+        font-size:11px;
+        font-weight:bold;
+
+        text-transform:uppercase;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px){
+
+    body{
+        padding:12px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .live-summary{
+        flex-direction:column;
+        gap:8px;
+    }
+
+    .total-bar{
+        justify-content:space-between;
+        gap:10px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     APPLICATION
+========================================================= -->
+
+<div class="container app">
+
+
+    <!-- JOB INFORMATION -->
+
+    <div class="card">
+
+        <div class="card-title">
+            Job Information
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>JOB NO.</label>
+
+                <input
+                    type="text"
+                    id="jobNo"
+                    placeholder="Enter job number"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>PRODUCT NAME</label>
+
+                <input
+                    type="text"
+                    id="productName"
+                    placeholder="Enter product name"
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- BATCH INFORMATION -->
+
+    <div class="card">
+
+        <div class="card-title">
+            Batch Information
+        </div>
+
+
+        <div class="form-grid">
+
+            <!-- BATCH -->
+
+            <div class="field">
+
+                <label>BATCH NO.</label>
+
+                <input
+                    type="text"
+                    id="batchNo"
+                    placeholder="Enter batch number"
+                >
+
+            </div>
+
+
+            <!-- PO -->
+
+            <div class="field">
+
+                <label>PO QTY</label>
+
+                <input
+                    type="number"
+                    id="poQty"
+                    value="0"
+                    min="0"
+                    placeholder="Enter PO quantity"
+                    oninput="calculateCurrent()"
+                >
+
+            </div>
+
+        </div>
+
+
+        <br>
+
+
+        <!-- PACKING -->
+
+        <div class="field">
+
+            <label>PACKING DETAILS</label>
+
+
+            <div class="packing-header">
+
+                <span>BOX QTY</span>
+
+                <span>PACKING</span>
+
+                <span></span>
+
+            </div>
+
+
+            <div id="packingContainer"></div>
+
+
+            <button
+                type="button"
+                class="btn-light"
+                onclick="addPackingRow()"
+            >
+                + ADD PACKING
+            </button>
+
+        </div>
+
+
+        <!-- LIVE SUMMARY -->
+
+        <div class="live-summary">
+
+            <div class="summary-item">
+
+                BOX QTY
+
+                <strong id="currentBoxQty">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-item">
+
+                PRODUCT QTY
+
+                <strong id="currentProductQty">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="summary-item">
+
+                SHORT
+
+                <strong id="currentShortQty">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="btn-row">
+
+            <button
+                class="btn-primary"
+                id="saveBatchBtn"
+                onclick="saveBatch()"
+            >
+                ADD BATCH
+            </button>
+
+
+            <button
+                class="btn-light"
+                onclick="clearBatchForm()"
+            >
+                CLEAR
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- BATCH LIST -->
+
+    <div class="card">
+
+        <div class="card-title">
+            Batch List
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>S.NO</th>
+
+                        <th>BATCH</th>
+
+                        <th>PACKING</th>
+
+                        <th>BOX</th>
+
+                        <th>QTY</th>
+
+                        <th>SHORT</th>
+
+                        <th>ACTION</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="batchTableBody"></tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- TOTAL -->
+
+        <div class="total-bar">
+
+            <div class="total-item">
+
+                TOTAL BOX
+
+                <strong id="totalBox">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="total-item">
+
+                TOTAL QTY
+
+                <strong id="totalQty">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- PDF -->
+
+        <div class="btn-row">
+
+            <button
+                class="btn-primary"
+                onclick="printPDF()"
+            >
+                PRINT / SAVE PDF
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     PDF SHEET
+========================================================= -->
+
+<div id="printSheet"></div>
+
+
+
+<script>
+
+/* =========================================================
+   DATA
+========================================================= */
+
+let batches = JSON.parse(
+    localStorage.getItem("productionBatches") || "[]"
+);
+
+let editIndex = -1;
+
+
+/* =========================================================
+   ADD PACKING ROW
+========================================================= */
+
+function addPackingRow(box = "", packing = ""){
+
+    const container =
+        document.getElementById(
+            "packingContainer"
+        );
+
+
+    const row =
+        document.createElement("div");
+
+
+    row.className =
+        "packing-row";
+
+
+    row.innerHTML = `
+
+        <input
+            type="number"
+            class="box-input"
+            placeholder="Box quantity"
+            min="0"
+            value="${box}"
+        >
+
+        <input
+            type="number"
+            class="packing-input"
+            placeholder="Packing"
+            min="0"
+            value="${packing}"
+        >
+
+        <button
+            type="button"
+            class="remove-btn"
+            onclick="removePackingRow(this)"
+        >
+            ×
+        </button>
+
+    `;
+
+
+    container.appendChild(row);
+
+
+    row.querySelectorAll("input")
+        .forEach(input => {
+
+            input.addEventListener(
+                "input",
+                calculateCurrent
+            );
+
+        });
+
+
+    calculateCurrent();
+
+}
+
+
+/* =========================================================
+   REMOVE PACKING ROW
+========================================================= */
+
+function removePackingRow(button){
+
+    const rows =
+        document.querySelectorAll(
+            ".packing-row"
+        );
+
+
+    if(rows.length <= 1){
+
+        alert(
+            "At least one packing row is required."
+        );
+
+        return;
+
+    }
+
+
+    button.parentElement.remove();
+
+    calculateCurrent();
+
+}
+
+
+/* =========================================================
+   CALCULATE CURRENT
+========================================================= */
+
+function calculateCurrent(){
+
+    let boxQty = 0;
+
+    let productQty = 0;
+
+
+    document
+        .querySelectorAll(".packing-row")
+        .forEach(row => {
+
+            const box =
+                Number(
+                    row.querySelector(
+                        ".box-input"
+                    ).value
+                ) || 0;
+
+
+            const packing =
+                Number(
+                    row.querySelector(
+                        ".packing-input"
+                    ).value
+                ) || 0;
+
+
+            boxQty += box;
+
+
+            productQty +=
+                box * packing;
+
+        });
+
+
+    const poQty =
+        Number(
+            document.getElementById(
+                "poQty"
+            ).value
+        ) || 0;
+
+
+    /*
+       SHORT FORMULA
+
+       PO QTY - PRODUCT QTY
+
+       Minimum short = 0
+    */
+
+    const shortQty =
+        Math.max(
+            0,
+            poQty - productQty
+        );
+
+
+    document.getElementById(
+        "currentBoxQty"
+    ).textContent = boxQty;
+
+
+    document.getElementById(
+        "currentProductQty"
+    ).textContent = productQty;
+
+
+    document.getElementById(
+        "currentShortQty"
+    ).textContent = shortQty;
+
+}
+
+
+/* =========================================================
+   GET PACKING DATA
+========================================================= */
+
+function getPackingData(){
+
+    const packing = [];
+
+
+    document
+        .querySelectorAll(".packing-row")
+        .forEach(row => {
+
+            const box =
+                Number(
+                    row.querySelector(
+                        ".box-input"
+                    ).value
+                ) || 0;
+
+
+            const qty =
+                Number(
+                    row.querySelector(
+                        ".packing-input"
+                    ).value
+                ) || 0;
+
+
+            if(
+                box > 0 &&
+                qty > 0
+            ){
+
+                packing.push({
+                    box:box,
+                    qty:qty
+                });
+
+            }
+
+        });
+
+
+    return packing;
+
+}
+
+
+/* =========================================================
+   SAVE BATCH
+========================================================= */
+
+function saveBatch(){
+
+    const batchNo =
+        document
+            .getElementById(
+                "batchNo"
+            )
+            .value
+            .trim();
+
+
+    const poQty =
+        Number(
+            document.getElementById(
+                "poQty"
+            ).value
+        ) || 0;
+
+
+    const packing =
+        getPackingData();
+
+
+    if(!batchNo){
+
+        alert(
+            "Please enter Batch No."
+        );
+
+        return;
+
+    }
+
+
+    if(poQty <= 0){
+
+        alert(
+            "Please enter PO Qty."
+        );
+
+        return;
+
+    }
+
+
+    if(packing.length === 0){
+
+        alert(
+            "Please add packing details."
+        );
+
+        return;
+
+    }
+
+
+    let boxQty = 0;
+
+    let productQty = 0;
+
+
+    packing.forEach(item => {
+
+        boxQty +=
+            item.box;
+
+
+        productQty +=
+            item.box * item.qty;
+
+    });
+
+
+    /* SHORT */
+
+    const shortQty =
+        Math.max(
+            0,
+            poQty - productQty
+        );
+
+
+    const batch = {
+
+        batchNo:batchNo,
+
+        poQty:poQty,
+
+        packing:packing,
+
+        boxQty:boxQty,
+
+        productQty:productQty,
+
+        short:shortQty
+
+    };
+
+
+    /* ADD */
+
+    if(editIndex === -1){
+
+        batches.push(batch);
+
+    }
+
+    /* UPDATE */
+
+    else{
+
+        batches[editIndex] =
+            batch;
+
+        editIndex = -1;
+
+
+        document.getElementById(
+            "saveBatchBtn"
+        ).textContent =
+            "ADD BATCH";
+
+    }
+
+
+    saveData();
+
+    renderTable();
+
+    clearBatchForm();
+
+}
+
+
+/* =========================================================
+   LOCAL STORAGE
+========================================================= */
+
+function saveData(){
+
+    localStorage.setItem(
+        "productionBatches",
+        JSON.stringify(batches)
+    );
+
+}
+
+
+/* =========================================================
+   RENDER TABLE
+========================================================= */
+
+function renderTable(){
+
+    const tbody =
+        document.getElementById(
+            "batchTableBody"
+        );
+
+
+    tbody.innerHTML = "";
+
+
+    if(batches.length === 0){
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    class="empty"
+                >
+                    No batch added yet
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+
+    let totalBox = 0;
+
+    let totalQty = 0;
+
+
+    batches.forEach(
+        (batch,index) => {
+
+            totalBox +=
+                Number(
+                    batch.boxQty
+                ) || 0;
+
+
+            totalQty +=
+                Number(
+                    batch.productQty
+                ) || 0;
+
+
+            const packingText =
+                batch.packing
+                    .map(
+                        p =>
+                            `${p.box}×${p.qty}`
+                    )
+                    .join(", ");
+
+
+            const tr =
+                document.createElement(
+                    "tr"
+                );
+
+
+            tr.innerHTML = `
+
+                <td>
+                    ${index + 1}
+                </td>
+
+                <td>
+                    ${escapeHTML(
+                        batch.batchNo
+                    )}
+                </td>
+
+                <td>
+                    ${packingText}
+                </td>
+
+                <td>
+                    ${batch.boxQty}
+                </td>
+
+                <td>
+                    ${batch.productQty}
+                </td>
+
+                <td>
+                    ${batch.short}
+                </td>
+
+                <td>
+
+                    <div
+                        class="action-buttons"
+                    >
+
+                        <button
+                            class="btn-edit"
+                            onclick="editBatch(${index})"
+                        >
+                            EDIT
+                        </button>
+
+                        <button
+                            class="btn-danger"
+                            onclick="deleteBatch(${index})"
+                        >
+                            DELETE
+                        </button>
+
+                    </div>
+
+                </td>
+
+            `;
+
+
+            tbody.appendChild(tr);
+
+        }
+    );
+
+
+    document.getElementById(
+        "totalBox"
+    ).textContent =
+        totalBox;
+
+
+    document.getElementById(
+        "totalQty"
+    ).textContent =
+        totalQty;
+
+}
+
+
+/* =========================================================
+   EDIT BATCH
+========================================================= */
+
+function editBatch(index){
+
+    const batch =
+        batches[index];
+
+
+    editIndex = index;
+
+
+    document.getElementById(
+        "batchNo"
+    ).value =
+        batch.batchNo;
+
+
+    document.getElementById(
+        "poQty"
+    ).value =
+        batch.poQty || 0;
+
+
+    const container =
+        document.getElementById(
+            "packingContainer"
+        );
+
+
+    container.innerHTML = "";
+
+
+    batch.packing.forEach(
+        item => {
+
+            addPackingRow(
+                item.box,
+                item.qty
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "saveBatchBtn"
+    ).textContent =
+        "UPDATE BATCH";
+
+
+    calculateCurrent();
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+function deleteBatch(index){
+
+    if(
+        !confirm(
+            "Are you sure you want to delete this batch?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    batches.splice(
+        index,
+        1
+    );
+
+
+    saveData();
+
+    renderTable();
+
+}
+
+
+/* =========================================================
+   CLEAR FORM
+========================================================= */
+
+function clearBatchForm(){
+
+    editIndex = -1;
+
+
+    document.getElementById(
+        "batchNo"
+    ).value = "";
+
+
+    document.getElementById(
+        "poQty"
+    ).value = "0";
+
+
+    document.getElementById(
+        "packingContainer"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+        "saveBatchBtn"
+    ).textContent =
+        "ADD BATCH";
+
+
+    addPackingRow();
+
+    calculateCurrent();
+
+}
+
+
+/* =========================================================
+   CREATE PDF
+   30 BATCHES PER PAGE
+========================================================= */
+
+function createPDFPages(){
+
+    const printSheet =
+        document.getElementById(
+            "printSheet"
+        );
+
+
+    printSheet.innerHTML = "";
+
+
+    const jobNo =
+        document.getElementById(
+            "jobNo"
+        ).value.trim();
+
+
+    const productName =
+        document.getElementById(
+            "productName"
+        ).value.trim();
+
+
+    /*
+       30 BATCHES PER PAGE
+    */
+
+    const totalPages =
+        Math.ceil(
+            batches.length / 30
+        );
+
+
+    for(
+        let page = 0;
+        page < totalPages;
+        page++
+    ){
+
+        const start =
+            page * 30;
+
+
+        const end =
+            Math.min(
+                start + 30,
+                batches.length
+            );
+
+
+        const pageBatches =
+            batches.slice(
+                start,
+                end
+            );
+
+
+        const pageDiv =
+            document.createElement(
+                "div"
+            );
+
+
+        pageDiv.className =
+            "pdf-page";
+
+
+        /* HEADER */
+
+        pageDiv.innerHTML = `
+
+            <div class="pdf-header">
+
+                <div class="pdf-header-cell">
+
+                    JOB NO. :
+                    ${escapeHTML(jobNo)}
+
+                </div>
+
+
+                <div class="pdf-header-cell">
+
+                    PRODUCT NAME :
+                    ${escapeHTML(productName)}
+
+                </div>
+
+            </div>
+
+
+            <table class="pdf-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th class="col-sno">
+                            S.NO
+                        </th>
+
+                        <th class="col-batch">
+                            BATCH
+                        </th>
+
+                        <th class="col-packing">
+                            PACKING
+                        </th>
+
+                        <th class="col-box">
+                            BOX
+                        </th>
+
+                        <th class="col-qty">
+                            QTY
+                        </th>
+
+                        <th class="col-short">
+                            SHORT
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody></tbody>
+
+            </table>
+
+        `;
+
+
+        printSheet.appendChild(
+            pageDiv
+        );
+
+
+        const tbody =
+            pageDiv.querySelector(
+                "tbody"
+            );
+
+
+        pageBatches.forEach(
+            (batch,index) => {
+
+                const globalIndex =
+                    start + index;
+
+
+                const packingText =
+                    batch.packing
+                        .map(
+                            p =>
+                                `${p.box}×${p.qty}`
+                        )
+                        .join(", ");
+
+
+                const tr =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                tr.innerHTML = `
+
+                    <td>
+                        ${globalIndex + 1}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            batch.batchNo
+                        )}
+                    </td>
+
+                    <td class="packing-cell">
+                        ${packingText}
+                    </td>
+
+                    <td>
+                        ${batch.boxQty}
+                    </td>
+
+                    <td>
+                        ${batch.productQty}
+                    </td>
+
+                    <td>
+                        ${batch.short}
+                    </td>
+
+                `;
+
+
+                tbody.appendChild(
+                    tr
+                );
+
+            }
+        );
+
+
+        /*
+           TOTAL ONLY ON LAST PAGE
+        */
+
+        if(
+            page === totalPages - 1
+        ){
+
+            let totalBox = 0;
+
+            let totalQty = 0;
+
+
+            batches.forEach(
+                batch => {
+
+                    totalBox +=
+                        Number(
+                            batch.boxQty
+                        ) || 0;
+
+
+                    totalQty +=
+                        Number(
+                            batch.productQty
+                        ) || 0;
+
+                }
+            );
+
+
+            const totalDiv =
+                document.createElement(
+                    "div"
+                );
+
+
+            totalDiv.className =
+                "pdf-total";
+
+
+            totalDiv.innerHTML = `
+
+                <span>
+                    TOTAL BOX :
+                    ${totalBox}
+                </span>
+
+
+                <span>
+                    TOTAL QTY :
+                    ${totalQty}
+                </span>
+
+            `;
+
+
+            pageDiv.appendChild(
+                totalDiv
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   PRINT / SAVE PDF
+========================================================= */
+
+function printPDF(){
+
+    const jobNo =
+        document.getElementById(
+            "jobNo"
+        ).value.trim();
+
+
+    const productName =
+        document.getElementById(
+            "productName"
+        ).value.trim();
+
+
+    if(!jobNo){
+
+        alert(
+            "Please enter Job No."
+        );
+
+        return;
+
+    }
+
+
+    if(!productName){
+
+        alert(
+            "Please enter Product Name."
+        );
+
+        return;
+
+    }
+
+
+    if(batches.length === 0){
+
+        alert(
+            "Please add at least one batch."
+        );
+
+        return;
+
+    }
+
+
+    createPDFPages();
+
+
+    setTimeout(
+        () => {
+
+            window.print();
+
+        },
+        100
+    );
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+renderTable();
+
+clearBatchForm();
+
+</script>
+
+</body>
+</html>
