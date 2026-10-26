@@ -719,7 +719,7 @@
         <input type="checkbox" id="multipleProductsToggle" onchange="toggleMultipleProducts()">
         <div class="toggle-slider"></div>
       </div>
-      <span class="toggle-label">Enable Multiple Cotton</span>
+      <span class="toggle-label">Enable Multiple Products</span>
     </label>
 
     <div id="multiPanel" class="multi-panel">
@@ -825,6 +825,7 @@
 
     <div class="btn-row">
       <button class="btn btn-success" onclick="printPDF()">🖨 Print / Save PDF</button>
+      <button class="btn btn-danger-soft" onclick="clearAllSavedData()">🗑 Clear All Saved Data</button>
     </div>
   </div>
 
@@ -1135,6 +1136,42 @@ function saveBatch() {
 
 function saveData() { localStorage.setItem('productionBatches', JSON.stringify(legacyBatches)); }
 
+// Delete all saved job/batch data in one click, after confirmation.
+async function clearAllSavedData() {
+  const ok = await confirmDialog(
+    'Clear All Saved Data?',
+    'This will permanently remove all saved batches, cotton names, job details, and saved suggestions from this browser. Downloaded PDF files will not be deleted.',
+    '🗑️'
+  );
+  if (!ok) return;
+
+  [
+    'productionBatches',
+    MULTI_KEY,
+    'productionMultiJobNo',
+    'productionMultiProductName',
+    'productionLastPOQty'
+  ].forEach(key => localStorage.removeItem(key));
+
+  legacyBatches = [];
+  batches = [];
+  products = [];
+  activeProductIndex = 0;
+  editIndex = -1;
+  multipleMode = false;
+
+  document.getElementById('jobNo').value = '';
+  document.getElementById('productName').value = '';
+  document.getElementById('multipleProductsToggle').checked = false;
+  document.getElementById('multiPanel').classList.remove('active');
+  document.getElementById('productTabs').innerHTML = '';
+  document.getElementById('batchListTitle').textContent = 'Batch List';
+  document.getElementById('batchNoSuggestions').innerHTML = '';
+  renderTable();
+  clearBatchForm();
+  showToast('All saved data cleared', 'success', 'You can start a new job now.');
+}
+
 function renderTable() {
   const tbody = document.getElementById('batchTableBody');
   tbody.innerHTML = '';
@@ -1380,8 +1417,21 @@ async function printPDF() {
     createSinglePDF(sheet, jobNo, name);
   }
   showToast('Opening print dialog...', 'info');
+  // The browser uses the document title as the suggested PDF filename.
+  const previousTitle = document.title;
+  const safeJobNo = jobNo.replace(/[\\/:*?"<>|]/g, '-').trim();
+  document.title = safeJobNo || 'Production Entry';
+  const restoreTitle = () => { document.title = previousTitle; window.removeEventListener('afterprint', restoreTitle); };
+  window.addEventListener('afterprint', restoreTitle);
   setTimeout(() => window.print(), 120);
 }
+
+/* ===== PREVENT MOUSE WHEEL FROM CHANGING NUMBER INPUTS ===== */
+document.addEventListener('wheel', function (event) {
+  if (event.target instanceof Element && event.target.closest('input[type="number"]')) {
+    event.preventDefault();
+  }
+}, { passive: false });
 
 /* ===== FORCE TEXT INPUT TO UPPERCASE ===== */
 document.addEventListener('input', function (event) {
