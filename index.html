@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Production Entry</title>
+<title>Batch_list_Pdf_maker</title>
 <meta name="description" content="Professional production batch entry and management system for manufacturing operations.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,10 +12,10 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --primary-light: #e0e7ff;
-    --primary-glow: rgba(99,102,241,0.25);
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #dbeafe;
+    --primary-glow: rgba(37,99,235,0.18);
     --danger: #ef4444;
     --danger-light: #fef2f2;
     --success: #10b981;
@@ -32,20 +32,20 @@
     --neutral-700: #334155;
     --neutral-800: #1e293b;
     --neutral-900: #0f172a;
-    --bg: #0f172a;
-    --surface: rgba(30,41,59,0.85);
-    --surface-solid: #1e293b;
-    --surface-hover: rgba(51,65,85,0.9);
-    --border: rgba(148,163,184,0.15);
-    --border-strong: rgba(148,163,184,0.3);
-    --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
+    --bg: #eef4fb;
+    --surface: #ffffff;
+    --surface-solid: #ffffff;
+    --surface-hover: #f3f7ff;
+    --border: #dbe5f1;
+    --border-strong: #c5d2e2;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
     --text-muted: #64748b;
     --radius: 14px;
     --radius-sm: 8px;
     --radius-lg: 20px;
-    --shadow: 0 4px 24px rgba(0,0,0,0.3);
-    --shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+    --shadow: 0 5px 22px rgba(30,64,120,0.07);
+    --shadow-lg: 0 12px 36px rgba(30,64,120,0.14);
     --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
   }
 
@@ -55,10 +55,21 @@
     color: var(--text-primary);
     min-height: 100vh;
     padding: 24px 16px 60px;
-    background-image:
-      radial-gradient(ellipse 80% 50% at 20% -10%, rgba(99,102,241,0.18) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 80% 110%, rgba(139,92,246,0.14) 0%, transparent 60%);
+    background-image: none;
+    font-weight: 600;
   }
+
+  input, select, textarea, button { font-weight: 700; }
+  label, .card-subtitle, .field, .section-label, .toggle-label, .multi-panel-title, td, th { font-weight: 700; }
+
+  .new-entry-reminder {
+    display: flex; flex-direction: column; gap: 6px;
+    padding: 14px 18px; margin: 0 0 20px;
+    border: 1px solid #f3d28a; border-left: 5px solid #d97706;
+    border-radius: 12px; background: #fffbeb; color: #78350f;
+    font-size: 13px; line-height: 1.5; font-weight: 700;
+  }
+  .new-entry-reminder strong { font-size: 14px; font-weight: 800; }
 
   /* ===== LAYOUT ===== */
   .app { max-width: 1060px; margin: 0 auto; }
@@ -81,7 +92,7 @@
     width: 46px;
     height: 46px;
     border-radius: 13px;
-    background: linear-gradient(135deg, var(--primary), #8b5cf6);
+    background: linear-gradient(135deg, #2563eb, #6366f1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -131,9 +142,9 @@
     font-size: 16px;
     flex-shrink: 0;
   }
-  .card-icon.indigo { background: rgba(99,102,241,0.2); }
-  .card-icon.violet { background: rgba(139,92,246,0.2); }
-  .card-icon.emerald { background: rgba(16,185,129,0.2); }
+  .card-icon.indigo { background: #e0eaff; }
+  .card-icon.violet { background: #eee8ff; }
+  .card-icon.emerald { background: #dcfce7; }
   .card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); }
   .card-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 
@@ -158,7 +169,7 @@
     font-size: 14px;
     font-family: inherit;
     font-weight: 500;
-    background: rgba(15,23,42,0.6);
+    background: #ffffff;
     color: var(--text-primary);
     transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
   }
@@ -169,7 +180,7 @@
   input[type="text"]:focus, input[type="number"]:focus {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px var(--primary-glow);
-    background: rgba(15,23,42,0.8);
+    background: #ffffff;
   }
 
   /* ===== TOGGLE ===== */
@@ -179,13 +190,13 @@
     gap: 12px;
     margin-top: 20px;
     padding: 14px 16px;
-    background: rgba(99,102,241,0.06);
+    background: #f0f5ff;
     border: 1px solid rgba(99,102,241,0.2);
     border-radius: var(--radius-sm);
     cursor: pointer;
     transition: background var(--transition);
   }
-  .multi-toggle:hover { background: rgba(99,102,241,0.1); }
+  .multi-toggle:hover { background: #e6efff; }
   .toggle-switch {
     position: relative;
     width: 40px;
@@ -221,7 +232,7 @@
     display: none;
     margin-top: 16px;
     padding: 18px;
-    background: rgba(15,23,42,0.4);
+    background: #f7faff;
     border: 1px dashed var(--border-strong);
     border-radius: var(--radius-sm);
     animation: slideDown 0.25s ease;
@@ -256,7 +267,7 @@
   }
   .product-tab:hover { border-color: var(--primary); color: var(--primary); }
   .product-tab.active {
-    background: linear-gradient(135deg, var(--primary), #8b5cf6);
+    background: linear-gradient(135deg, #2563eb, #6366f1);
     color: white;
     border-color: transparent;
     box-shadow: 0 2px 12px var(--primary-glow);
@@ -301,7 +312,7 @@
     height: 44px;
     border: 1.5px solid rgba(239,68,68,0.3);
     border-radius: var(--radius-sm);
-    background: rgba(239,68,68,0.1);
+    background: #fff1f2;
     color: var(--danger);
     font-size: 18px;
     font-weight: bold;
@@ -324,14 +335,14 @@
   .summary-card {
     padding: 14px 16px;
     border-radius: var(--radius-sm);
-    background: rgba(15,23,42,0.5);
+    background: #f7faff;
     border: 1px solid var(--border);
     text-align: center;
     transition: all var(--transition);
   }
-  .summary-card:nth-child(1) { border-color: rgba(99,102,241,0.3); }
-  .summary-card:nth-child(2) { border-color: rgba(16,185,129,0.3); }
-  .summary-card:nth-child(3) { border-color: rgba(245,158,11,0.3); }
+  .summary-card:nth-child(1) { border-color: #c7d7ff; }
+  .summary-card:nth-child(2) { border-color: #a7e8c5; }
+  .summary-card:nth-child(3) { border-color: #f5d28a; }
   .summary-label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
   .summary-value { font-size: 24px; font-weight: 800; }
   .summary-card:nth-child(1) .summary-value { color: var(--primary); }
@@ -358,7 +369,7 @@
   }
   .btn:active { transform: scale(0.97); }
   .btn-primary {
-    background: linear-gradient(135deg, var(--primary), #8b5cf6);
+    background: linear-gradient(135deg, #2563eb, #6366f1);
     color: white;
     box-shadow: 0 2px 12px var(--primary-glow);
   }
@@ -370,7 +381,7 @@
   }
   .btn-secondary:hover { border-color: var(--neutral-400); color: var(--text-primary); }
   .btn-danger-soft {
-    background: rgba(239,68,68,0.12);
+    background: #fff1f2;
     color: var(--danger);
     border: 1.5px solid rgba(239,68,68,0.25);
   }
@@ -387,16 +398,16 @@
   /* ===== TABLE ===== */
   .table-wrapper { overflow-x: auto; border-radius: var(--radius-sm); border: 1px solid var(--border); }
   table { width: 100%; border-collapse: collapse; }
-  thead tr { background: rgba(15,23,42,0.6); }
+  thead tr { background: linear-gradient(135deg, #1e40af, #2563eb); }
   th {
     padding: 13px 10px;
     text-align: center;
     font-size: 11px;
     font-weight: 700;
-    color: var(--text-muted);
+    color: #ffffff;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #1d4ed8;
     white-space: nowrap;
   }
   td {
@@ -407,7 +418,7 @@
     border-bottom: 1px solid rgba(148,163,184,0.07);
     transition: background var(--transition);
   }
-  tbody tr:hover td { background: rgba(99,102,241,0.05); }
+  tbody tr:hover td { background: #f4f7ff; }
   tbody tr:last-child td { border-bottom: none; }
   td.packing-cell { text-align: left; color: var(--text-primary); font-weight: 500; }
   td.batch-cell { font-weight: 600; color: var(--text-primary); }
@@ -423,7 +434,7 @@
     gap: 32px;
     margin-top: 20px;
     padding: 16px 20px;
-    background: rgba(99,102,241,0.06);
+    background: #f0f5ff;
     border: 1px solid rgba(99,102,241,0.15);
     border-radius: var(--radius-sm);
     flex-wrap: wrap;
@@ -530,7 +541,7 @@
     padding: 0 14px;
     border: 1.5px solid var(--border-strong);
     border-radius: var(--radius-sm);
-    background: rgba(15,23,42,0.7);
+    background: #ffffff;
     color: var(--text-primary);
     font-size: 14px;
     font-family: inherit;
@@ -692,6 +703,11 @@
 </div>
 
 <div class="container app">
+
+  <div class="new-entry-reminder" role="note">
+    <strong>⚠ BEFORE STARTING A NEW ENTRY</strong>
+    <span>Clear all previous saved data using the “Clear All Saved Data” button before entering a new job.</span>
+  </div>
 
   <!-- Job Information Card -->
   <div class="card">
